@@ -1,35 +1,30 @@
 import os
 
-from dagster import ConfigurableIOManager, Definitions, asset
-from pyspark.sql import DataFrame, Row, SparkSession
-from pyspark.sql.types import IntegerType, StringType, StructField, StructType
+from dagster import job, op, Definitions, asset, EnvVar
 
+from dagster_aws.s3 import S3Resource
 
-class LocalParquetIOManager(ConfigurableIOManager):
-    def _get_path(self, context):
-        return os.path.join(*context.asset_key.path)
-
-    def handle_output(self, context, obj):
-        obj.write.parquet(self._get_path(context))
-
-    def load_input(self, context):
-        spark = SparkSession.builder.getOrCreate()
-        return spark.read.parquet(self._get_path(context.upstream_output))
-
-
-@asset
-def people() -> DataFrame:
-    schema = StructType([StructField("name", StringType()), StructField("age", IntegerType())])
-    rows = [Row(name="Thom", age=51), Row(name="Jonny", age=48), Row(name="Nigel", age=49)]
-    spark = SparkSession.builder.getOrCreate()  # type: ignore
-    return spark.createDataFrame(rows, schema)
-
-
-@asset
-def people_over_50(people: DataFrame) -> DataFrame:
-    return people.filter(people["age"] > 50)
-
-
-defs = Definitions(
-    assets=[people, people_over_50], resources={"io_manager": LocalParquetIOManager()}
+nas_minio = S3Resource(
+    aws_secret_access_key=EnvVar("S3_SECRET_KEY"),
+    aws_access_key_id=EnvVar("S3_ACCESS_KEY"),
+    endpoint_url=EnvVar("S3_ENDPOINT"),
 )
+
+
+@op
+def example_s3_op(s3: S3Resource):
+    return s3.get_client().list_objects_v2(Bucket="leaks")
+
+
+@job
+def example_job():
+    example_s3_op()
+
+
+defs = Definitions(jobs=[example_job], resources={"s3": nas_minio})
+
+
+@asset
+def password_dumps() -> None:
+    """unrars password dumps and puts in minio"""
+    pass
