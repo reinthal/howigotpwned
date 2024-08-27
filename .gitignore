@@ -4,4 +4,4 @@ tmp*
 .env
 *__pycache__*
 .direnv
-dagster_project/dagster_home*
+dagster_home*
