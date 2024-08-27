@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env:
-  REGISTRY: ${{ vars.CONTAINER_REGISTRY_LOGIN_SERVER }}
+  REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 concurrency: production
 jobs:
