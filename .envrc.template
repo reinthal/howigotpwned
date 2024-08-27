@@ -1,0 +1,7 @@
+use flake --experimental-features 'nix-command flakes'
+watch_file ./nix/*
+REPO_ROOT=$(git rev-parse --show-toplevel)
+export DAGSTER_HOME=$REPO_ROOT/dagster_project/dagster_home
+export S3_ACCESS_KEY=CONFIGUREKEY 
+export S3_SECRET_KEY=CONFIGURESECRET
+export S3_ENDPOINT=CONFIGUREENDPOINT
