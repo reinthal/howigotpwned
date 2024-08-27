@@ -34,6 +34,8 @@ dagster = "^1.8.0"
 requests = "^2.32.3"
 poetry-dotenv-plugin = "^0.1.0"
 
+dagster-spark = "^0.24.2"
+dagster-pyspark = "^0.24.2"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"
@@ -41,6 +43,7 @@ commitizen = "^3.27.0"
 pre-commit = "^3.7.1"
 dagster-webserver = "^1.8.0"
 
+pytest = "^8.3.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
