@@ -2,7 +2,7 @@
 name = "pokemon"
 version = "0.1.0"
 description = ""
-authors = ["Alexander Reinthal <alexander.reinthal@knowit.se>", "Pierre Oskarsson <pierre.oskarsson@knowit.se>"]
+authors = ["Alexander Reinthal <alexander.reinthal@knowit.se>"]
 readme = "README.md"
 package-mode = false
 
@@ -31,17 +31,10 @@ major_version_zero = true
 [tool.poetry.dependencies]
 python = "~3.12"
 dagster = "^1.8.0"
-dagster-postgres = "<0.25.0"
 requests = "^2.32.3"
-dagster-snowflake-pandas = "<0.25.0"
-dlt = {extras = ["snowflake"], version = "^0.4.12"}
 poetry-dotenv-plugin = "^0.1.0"
-enlighten = "^1.12.4"
-dagster-embedded-elt = "<0.25.0"
-dagster-pandera = "^0.24.1"
 
 [tool.poetry.group.dev.dependencies]
-pandas = "^2.2.2"
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"
 commitizen = "^3.27.0"
