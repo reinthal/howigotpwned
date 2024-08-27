@@ -1,0 +1,90 @@
+name: Auto Tag my Application
+on:
+  push:
+    branches:
+      - main
+env:
+  REGISTRY: ${{ vars.CONTAINER_REGISTRY_LOGIN_SERVER }}
+  IMAGE_NAME: ${{ github.repository }}
+concurrency: production
+jobs:
+  Patch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check if repo is a template
+      id: checkIfTemplate
+      run: |
+        repo=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+        response=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository_owner }}/$repo)
+        is_template=$(echo $response | jq -r '.is_template')
+        if [ "$is_template" = "true" ]; then
+          echo "This repository is a template."
+          echo "::set-output name=is_template::true"
+        else
+          echo "::set-output name=is_template::false"
+        fi
+      shell: bash
+    
+    - uses: actions/checkout@v2
+      if: steps.checkIfTemplate.outputs.is_template != 'true'
+      with:
+        fetch-depth: '0'
+    
+    - id: taggerDryRun   
+      name: Do commitizen on dry run
+      if: steps.checkIfTemplate.outputs.is_template != 'true'
+      uses: commitizen-tools/commitizen-action@master
+      with:
+        github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        dry_run: true
+    
+    - id: taggerRun
+      name: Create bump and changelog
+      if: steps.checkIfTemplate.outputs.is_template != 'true'
+      uses: commitizen-tools/commitizen-action@master
+      with:
+        github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        changelog_increment_filename: changelog.md
+    
+    - name: echo tag
+      if: steps.checkIfTemplate.outputs.is_template != 'true'
+      run: |
+        echo "The current tag is: ${{ steps.taggerDryRun.outputs.version }}"
+    
+    - name: echo new tag
+      if: steps.checkIfTemplate.outputs.is_template != 'true'
+      run: |
+        echo "The next tag version will be: ${{ steps.taggerRun.outputs.version }}"
+    
+    # DO MY BUILD HERE
+    - name: Login to GitHub Container Registry
+      if: steps.checkIfTemplate.outputs.is_template != 'true'
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name : extract metadata (tags, labels) for Docker
+      if: steps.checkIfTemplate.outputs.is_template != 'true'
+      id: meta
+      uses: docker/metadata-action@v2
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+    
+    - name: Build and push Docker images
+      if: steps.checkIfTemplate.outputs.is_template != 'true'
+      # You may pin to the exact commit or the version.
+      uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0
+      with:
+        # List of a customs host-to-IP mapping (e.g., docker:10.180.0.1)
+        # Build's context is the set of files located in the specified PATH or URL
+        context: . # optional
+        push: true
+        # Path to the Dockerfile
+        # List of tags
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.taggerRun.outputs.version }}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest # optional
+        labels: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.labels}}
+ 
+        # GitHub Token used to authenticate against a repository for Git context
+        github-token: ${{ github.token }} # optional

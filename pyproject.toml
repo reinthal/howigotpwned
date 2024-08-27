@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "pokemon"
+version = "0.1.0"
+description = ""
+authors = ["Alexander Reinthal <alexander.reinthal@knowit.se>", "Pierre Oskarsson <pierre.oskarsson@knowit.se>"]
+readme = "README.md"
+package-mode = false
+
+[tool.ruff]
+# Enable flake8-bugbear (`B`) rules.
+select = ["E", "F", "B", "I"]
+
+# Never enforce `E501` (line length violations).
+# ignore = ["E501"]
+
+# Avoid trying to fix flake8-bugbear (`B`) violations.
+unfixable = ["B"]
+
+# Ignore `E402` (import violations) in all `__init__.py` files, and in `path/to/file.py`.
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver2"
+version_provider = "scm"
+update_changelog_on_bump = true
+major_version_zero = true
+[per-file-ignores]
+"__init__.py" = ["E402", "F401"]
+
+[tool.poetry.dependencies]
+python = "~3.12"
+dagster = "^1.8.0"
+dagster-postgres = "<0.25.0"
+requests = "^2.32.3"
+dagster-snowflake-pandas = "<0.25.0"
+dlt = {extras = ["snowflake"], version = "^0.4.12"}
+poetry-dotenv-plugin = "^0.1.0"
+enlighten = "^1.12.4"
+dagster-embedded-elt = "<0.25.0"
+dagster-pandera = "^0.24.1"
+
+[tool.poetry.group.dev.dependencies]
+pandas = "^2.2.2"
+jupyterlab = "^4.2.3"
+ipython = "^8.18.0"
+commitizen = "^3.27.0"
+pre-commit = "^3.7.1"
+dagster-webserver = "^1.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.dagster]
+module_name = "dagster_project"

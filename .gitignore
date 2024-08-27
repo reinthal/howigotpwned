@@ -1,0 +1,7 @@
+.venv
+tmp*
+.envrc
+.env
+*__pycache__*
+.direnv
+dagster_project/dagster_home*
