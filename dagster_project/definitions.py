@@ -1,7 +1,5 @@
-import os
-
+from typing import Any
 from dagster import job, op, Definitions, asset, EnvVar
-
 from dagster_aws.s3 import S3Resource
 
 nas_minio = S3Resource(
@@ -25,6 +23,6 @@ defs = Definitions(jobs=[example_job], resources={"s3": nas_minio})
 
 
 @asset
-def password_dumps() -> None:
-    """unrars password dumps and puts in minio"""
-    pass
+def password_dumps_rar(s3: S3Resource = nas_minio) -> Any:
+    """All password dumps and puts in minio"""
+    return s3.get_client.list_objects(Bucket="leaks")
