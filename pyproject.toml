@@ -37,7 +37,8 @@ poetry-dotenv-plugin = "^0.1.0"
 dagster-spark = "^0.24.2"
 dagster-pyspark = "^0.24.2"
 dagster-aws = "^0.24.2"
-dlt = "^0.5.4"
+dlt = {extras = ["filesystem"], version = "^0.5.4"}
+openpyxl = "^3.1.5"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"
