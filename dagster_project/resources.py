@@ -7,5 +7,3 @@ nas_minio = S3Resource(
     aws_access_key_id=EnvVar("S3_ACCESS_KEY"),
     endpoint_url=EnvVar("S3_ENDPOINT"),
 )
-
-
