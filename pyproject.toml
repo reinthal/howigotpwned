@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pokemon"
+name = "leaks"
 version = "0.1.0"
 description = ""
 authors = ["Alexander Reinthal <alexander.reinthal@knowit.se>"]
@@ -37,6 +37,7 @@ poetry-dotenv-plugin = "^0.1.0"
 dagster-spark = "^0.24.2"
 dagster-pyspark = "^0.24.2"
 dagster-aws = "^0.24.2"
+dlt = "^0.5.4"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"
