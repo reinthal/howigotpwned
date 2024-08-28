@@ -17,6 +17,7 @@ from .readers import (
     _read_csv_duckdb,
     _read_jsonl,
     _read_parquet,
+    _read_zips,
 )
 from .settings import DEFAULT_CHUNK_SIZE
 
@@ -92,7 +93,7 @@ def filesystem(
     if files_chunk:
         yield files_chunk
 
-
+read_zips = dlt.transformer(standalone=True)(_read_zips)
 read_csv = dlt.transformer(standalone=True)(_read_csv)
 read_jsonl = dlt.transformer(standalone=True)(_read_jsonl)
 read_parquet = dlt.transformer(standalone=True)(_read_parquet)

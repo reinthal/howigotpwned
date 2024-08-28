@@ -6,17 +6,18 @@ import dlt
 from dlt.sources import TDataItems
 
 try:
-    from .filesystem import FileItemDict, filesystem, readers, read_csv  # type: ignore
+    from .filesystem import FileItemDict, filesystem, readers, read_csv, read_zips  # type: ignore
 except ImportError:
     from filesystem import (
         FileItemDict,
         filesystem,
         readers,
         read_csv,
+        read_zips,
     )
 
 
-TESTS_BUCKET_URL = "s3://leaks/Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]")
+TESTS_BUCKET_URL = "s3://leaks/Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]"
 
 
 def stream_and_merge_csv() -> None:
@@ -204,11 +205,27 @@ def read_files_incrementally_mtime() -> None:
     print(pipeline.last_trace.last_normalize_info)
 
 
+def read_files_from_zips() -> None:
+
+    pipeline = dlt.pipeline(
+        pipeline_name="zip_files",
+        destination="filesystem",
+        dataset_name="test_upload_zips"
+    )
+    zip_files = filesystem(bucket_url="s3://leaks/Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]", file_glob="*.zip")
+
+    load_info = pipeline.run(
+        (zip_files | read_zips())
+    )
+    print(load_info)
+    print(pipeline.last_trace.last_normalize_info)
+
 if __name__ == "__main__":
-    copy_files_resource("_storage")
-    stream_and_merge_csv()
-    read_parquet_and_jsonl_chunked()
-    read_custom_file_type_excel()
-    read_files_incrementally_mtime()
-    read_csv_with_duckdb()
-    read_csv_duckdb_compressed()
+    read_files_from_zips()
+    #copy_files_resource("_storage")
+    #tream_and_merge_csv()
+    #read_parquet_and_jsonl_chunked()
+    #read_custom_file_type_excel()
+    ##read_files_incrementally_mtime()
+    #read_csv_with_duckdb()
+    #read_csv_duckdb_compressed()
