@@ -1,5 +1,4 @@
 from dagster import EnvVar
-
 from dagster_aws.s3 import S3Resource
 
 nas_minio = S3Resource(
