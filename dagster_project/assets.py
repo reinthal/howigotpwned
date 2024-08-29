@@ -1,8 +1,9 @@
 
 import zipfile
 from io import BytesIO
+from typing import List
 
-from dagster import AssetExecutionContext, asset, op
+from dagster import AssetExecutionContext, asset
 from dagster_aws.s3 import S3Resource
 
 from dagster_project.partitions import password_archive_partitions_def
@@ -12,11 +13,14 @@ TARGET_BUCKET='raw'
 FOLDER_PATH='Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]'
 
 @asset
-def cit0day_prem_special_for_xssis_file_list(s3: S3Resource) -> None:
+def cit0day_prem_special_for_xssis_file_list(
+    context: AssetExecutionContext, 
+    s3: S3Resource) -> List[str]:
     """All password dumps and puts in minio"""
     response = s3.get_client().list_objects(Bucket=SOURCE_BUCKET, Marker=FOLDER_PATH)
     archives = [obj["Key"] for obj in response["Contents"]][:100]
-    password_archive_partitions_def.build_add_request(archives)
+    context.instance.add_dynamic_partitions(password_archive_partitions_def.name, \
+        partition_keys=archives)
     return archives
 
 @asset(
@@ -27,7 +31,7 @@ def cit0day_uncompressed(context: AssetExecutionContext, s3: S3Resource):
     archive = context.partition_key
     buffer = BytesIO()
 
-    s3.download_fileobj(SOURCE_BUCKET, archive, buffer)
+    s3.get_client().download_fileobj(SOURCE_BUCKET, archive, buffer)
 
     with zipfile.ZipFile(buffer, 'r') as zip_ref:
          for zip_info in zip_ref.infolist():
