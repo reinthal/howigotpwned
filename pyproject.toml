@@ -2,7 +2,7 @@
 name = "leaks"
 version = "0.1.0"
 description = ""
-authors = ["Alexander Reinthal <alexander.reinthal@knowit.se>"]
+authors = ["kog <kognitiva@pm.me>"]
 readme = "README.md"
 package-mode = false
 
@@ -39,6 +39,8 @@ dagster-pyspark = "^0.24.2"
 dagster-aws = "^0.24.2"
 dlt = {extras = ["filesystem"], version = "^0.5.4"}
 openpyxl = "^3.1.5"
+python-magic = "^0.4.27"
+patool = "^2.4.0"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"
@@ -47,6 +49,7 @@ pre-commit = "^3.7.1"
 dagster-webserver = "^1.8.0"
 
 pytest = "^8.3.2"
+minio = "^7.2.8"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

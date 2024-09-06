@@ -17,7 +17,7 @@
     poetry2nix,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs { system = "${system}"; config.allowUnfree = true; };
       p2nix = import poetry2nix {inherit pkgs;};
 
       pyenv =
@@ -70,6 +70,8 @@
           pkgs.lazygit
           pkgs.poetry
           pkgs.cmake
+          pkgs.rar
+          pkgs.zip
         ];
       };
     });

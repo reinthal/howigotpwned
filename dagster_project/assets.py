@@ -7,6 +7,7 @@ from dagster import AssetExecutionContext, asset
 from dagster_aws.s3 import S3Resource
 
 from dagster_project.partitions import password_archive_partitions_def
+from dagster_project.utils import unpack
 
 SOURCE_BUCKET='leaks'
 TARGET_BUCKET='raw'
