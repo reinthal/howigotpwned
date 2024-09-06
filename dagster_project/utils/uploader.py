@@ -6,9 +6,9 @@ from dagster_aws.s3 import S3Resource
 
 class Uploader:
 
-    def __init__(self, s3: S3Resource, bucket: str):
+    def __init__(self, s3: S3Resource, destination_bucket: str):
         self.s3 = s3
-        self.bucket = bucket
+        self.destination_bucket = destination_bucket
     
     def copy_archive_to_s3(self, archive_path, parent_key=""):
         # Create filesystems
@@ -16,9 +16,8 @@ class Uploader:
         with tempfile.TemporaryDirectory() as tmpdirname:
             patoolib.extract_archive(archive_path, outdir=tmpdirname)
             for f in os.listdir(tmpdirname):
-                print(f"{tmpdirname}/{f}")
                 Key = f if not parent_key else f"{parent_key}/{f}"
-                client.upload_file(f"{tmpdirname}/{f}", Bucket=self.bucket, Key=Key)
+                client.upload_file(f"{tmpdirname}/{f}", Bucket=self.destination_bucket, Key=Key)
 
 def main():
     bucket_name = 'dev'
