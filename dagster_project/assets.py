@@ -14,19 +14,24 @@ TARGET_BUCKET='raw'
 FOLDER_PATH='Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]'
 
 @asset
-def cit0day_prem_special_for_xssis_file_list(
+def cit0day_prem_special_for_xssis_archives(
     context: AssetExecutionContext, 
     s3: S3Resource) -> List[str]:
-    """All password dumps and puts in minio"""
-    response = s3.get_client().list_objects(Bucket=SOURCE_BUCKET, Marker=FOLDER_PATH)
-    archives = [obj["Key"] for obj in response["Contents"]]
-    context.instance.add_dynamic_partitions(password_archive_partitions_def.name, \
-        partition_keys=archives)
+    """Asset for all password dump archives"""
+    paginator = s3.get_client().get_paginator("list_objects")
+    response_iterator = paginator.paginate(Bucket=SOURCE_BUCKET, Prefix=FOLDER_PATH)
+
+    # do the paginator loop
+    for page in iter(response_iterator):
+        # loop over each page
+        archives = [obj["Key"] for obj in page["Contents"]]
+        context.instance.add_dynamic_partitions(password_archive_partitions_def.name, \
+            partition_keys=archives)
     return archives
 
 @asset(
     partitions_def=password_archive_partitions_def,
-    deps=[cit0day_prem_special_for_xssis_file_list]
+    deps=[cit0day_prem_special_for_xssis_archives]
 )
 def cit0day_uncompressed(context: AssetExecutionContext, s3: S3Resource):
     archive = context.partition_key
