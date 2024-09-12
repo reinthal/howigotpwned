@@ -66,6 +66,7 @@
       devShells.default = pkgs.mkShell {
         buildInputs = [
           pyenv
+	  pkgs.postgresql
           pkgs.podman
           pkgs.lazygit
           pkgs.poetry

@@ -41,6 +41,12 @@ dlt = {extras = ["filesystem"], version = "^0.5.4"}
 openpyxl = "^3.1.5"
 python-magic = "^0.4.27"
 patool = "^2.4.0"
+polars = "^1.6.0"
+getdaft = "^0.3.2"
+pyiceberg = "^0.7.1"
+s3fs = "^2024.9.0"
+duckdb = "^1.0.0"
+psycopg2 = "psycopg2"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"

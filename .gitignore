@@ -8,3 +8,4 @@ tmp*
 dagster_home*
 *zip
 *rar
+*.parquet
