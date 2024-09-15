@@ -13,9 +13,10 @@ LEAKS_BUCKET='leaks'
 RAW_BUCKET='raw'
 FOLDER_PATH='Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]'
 
-@asset
+@asset(group_name="raw")
 def cit0day_prem_special_for_xssis_archives(
     context: AssetExecutionContext, 
+    
     s3: S3Resource) -> List[str]:
     """Asset for all password dump archives"""
     archives = get_objects(source_bucket=LEAKS_BUCKET, prefix=FOLDER_PATH, s3=s3)
@@ -26,6 +27,7 @@ def cit0day_prem_special_for_xssis_archives(
 
 @asset(
     partitions_def=password_archive_partitions_def,
+    group_name="raw",
     deps=[cit0day_prem_special_for_xssis_archives]
 )
 def cit0day_uncompressed(context: AssetExecutionContext, s3: S3Resource):
@@ -63,13 +65,13 @@ def cit0day_password_files(
         })
     catalog = load_catalog("default",
            **{
-             "warehouse": EnvVar("DESTINATION__CATALOG__WAREHOUSE"),
-              "uri": EnvVar("DESTINATION__CATALOG__URI"),
+             "warehouse": EnvVar("DESTINATION__CATALOG__WAREHOUSE").get_value(),
+              "uri": EnvVar("DESTINATION__CATALOG__URI").get_value(),
               "py-io-impl": "pyiceberg.io.pyarrow.PyArrowFileIO",
-              "s3.endpoint": EnvVar("DESTINATION__CATALOG__S3_ENDPOINT"),
-              "s3.access-key-id": EnvVar("DESTINATION__CATALOG__ACCESS_KEY_ID"),
-              "s3.secret-access-key": EnvVar("DESTINATION__CATALOG__SECRET_ACCESS_KEY"),
-              "type": EnvVar("DESTINATION__CATALOG__TYPE")
+              "s3.endpoint": EnvVar("DESTINATION__CATALOG__S3_ENDPOINT").get_value(),
+              "s3.access-key-id": EnvVar("DESTINATION__CATALOG__ACCESS_KEY_ID").get_value(),
+              "s3.secret-access-key": EnvVar("DESTINATION__CATALOG__SECRET_ACCESS_KEY").get_value(),
+              "type": EnvVar("DESTINATION__CATALOG__TYPE").get_value()
     })
     catalog.create_namespace_if_not_exists("staging")
     table = catalog.create_table_if_not_exists("staging.cit0day_password_files", schema=password_files_pyarrow_schema)
@@ -83,7 +85,7 @@ def cit0day_password_files(
         file_name = obj
         # download the file
         file_obj = BytesIO()
-        s3.get_client().download_file(RAW_BUCKET, file_name, file_obj)
+        s3.get_client().download_fileobj(RAW_BUCKET, file_name, file_obj)
         df = pl.read_csv(file_obj, has_header=False, separator=":", schema=password_files_polars_schema)
         df.with_columns(
             (pl.lit(RAW_BUCKET)).alias("bucket"),
