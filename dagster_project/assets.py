@@ -1,13 +1,11 @@
 import tempfile
-import zipfile
-from io import BytesIO
 from typing import List
 
 from dagster import AssetExecutionContext, asset
 from dagster_aws.s3 import S3Resource
 
 from dagster_project.partitions import password_archive_partitions_def
-from dagster_project.utils.uploader import Uploader
+from dagster_project.utils.uploader import copy_archive_to_s3
 
 SOURCE_BUCKET='leaks'
 TARGET_BUCKET='raw'
@@ -38,8 +36,7 @@ def cit0day_uncompressed(context: AssetExecutionContext, s3: S3Resource):
     
     with tempfile.NamedTemporaryFile() as tf:
         s3.get_client().download_file(SOURCE_BUCKET, archive, tf.name) 
-        ul = Uploader(s3, TARGET_BUCKET)
-        ul.copy_archive_to_s3(tf.name, parent_key=archive)
+        copy_archive_to_s3(s3, TARGET_BUCKET, tf.name, parent_key=archive)
     
     context.log.info(f"Uploaded {archive} to `{TARGET_BUCKET}`")
     
