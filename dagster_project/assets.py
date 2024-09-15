@@ -87,12 +87,12 @@ def cit0day_password_files(
         file_obj = BytesIO()
         s3.get_client().download_fileobj(RAW_BUCKET, file_name, file_obj)
         df = pl.read_csv(file_obj, has_header=False, separator=":", schema=password_files_polars_schema)
-        df.with_columns(
+        
+        pa_df = df.with_columns(
             (pl.lit(RAW_BUCKET)).alias("bucket"),
             (pl.lit(file_name)).alias("prefix")
-        )
-        py_df = df.to_arrow()
-        table.append(py_df)
+        ).to_arrow()
+        table.append(pa_df)
 
     return df
     
