@@ -62,6 +62,8 @@ def cit0day_password_files(
     password_files_polars_schema = pl.Schema({
         "email": pl.String(),
         "data": pl.String(),
+        "bucket": pl.String(),
+        "prefix": pl.String()
         })
     catalog = load_catalog("default",
            **{
