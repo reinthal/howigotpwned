@@ -1,0 +1,96 @@
+name: Continuous Integration
+on:
+  push: 
+    branches-ignore: # Dont run CI on main because code has already been merged
+      - 'main' 
+  pull_request: 
+    branches:
+      - main
+    paths:
+      - "./**"
+
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_PATH: "./"
+  DOCKERFILE: "./Dockerfile"
+
+jobs:
+  file-changes:
+    name: Check for file changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    # Set job outputs to values from filter step
+    outputs:
+      python: ${{ steps.filter.outputs.python }}
+      python_files: ${{ steps.filter.outputs.python_files }}
+      sql: ${{ steps.filter.outputs.sql }}
+      sql_files: ${{ steps.filter.outputs.sql_files }}
+      dbt: ${{ steps.filter.outputs.dbt }}
+      dbt_files: ${{ steps.filter.outputs.dbt_files }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: ${{ env.SOURCE_PATH }}
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          list-files: shell
+          filters: | # Do we need to filter for sql and dbt if there is no action?
+            python:
+              - added|modified: '**.py'
+            sql: 
+              - added|modified: '**.sql'
+            dbt:
+              - './dbt/**'
+
+  python-static-checks:
+    name: Python static checks
+    runs-on: ubuntu-latest
+    needs: file-changes
+    if: ${{ needs.file-changes.outputs.python == 'true' }}
+    steps:
+      - name: Python files changed
+        run: echo "Python files changed ${{ needs.file-changes.outputs.python_files }}"
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Black diff
+        uses: psf/black@stable
+        with:
+          options: "--check"
+          src: ${{ env.SOURCE_PATH }}
+          version: "23.3.0"
+
+      - name: Install ruff
+        run: pip install ruff
+      - name: Lint with ruff
+        run: ruff check ${{ env.SOURCE_PATH }}
+
+  # Check that image can be built without pushing on success
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: python-static-checks
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: ${{ env.SOURCE_PATH }}
+      - name: Build the docker image
+        uses: docker/build-push-action@v6
+        with:
+          file: ./Dockerfile
+          tags: test_build
+          push: false
