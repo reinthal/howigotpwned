@@ -73,6 +73,7 @@
           pkgs.cmake
           pkgs.rar
           pkgs.zip
+          pkgs.unzip
         ];
       };
     });

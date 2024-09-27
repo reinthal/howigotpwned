@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=python:3.10.14
+ARG BASE_IMAGE=python:3.12.4
 ARG CODE_LOCATION_NAME=dagster_project
 # Build stage 1: Installing depedencies with Poetry
 FROM ${BASE_IMAGE} as builder
