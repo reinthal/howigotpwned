@@ -1,6 +1,14 @@
 [![Continuous Integration](https://github.com/reinthal/leakme/actions/workflows/ci.yaml/badge.svg)](https://github.com/reinthal/leakme/actions/workflows/ci.yaml)
 [![Continuous Delivery](https://github.com/reinthal/leakme/actions/workflows/cd.yaml/badge.svg)](https://github.com/reinthal/leakme/actions/workflows/cd.yaml)
 
+```
+.__                      .___   ________           __   __________                              .___
+|  |__    ____  __  _  __|   | /  _____/   ____  _/  |_ \______   \__  _  __  ____    ____    __| _/
+|  |  \  /  _ \ \ \/ \/ /|   |/   \  ___  /  _ \ \   __\ |     ___/\ \/ \/ / /    \ _/ __ \  / __ |
+|   Y  \(  <_> ) \     / |   |\    \_\  \(  <_> ) |  |   |    |     \     / |   |  \  ___/ / /_/ |
+|___|  / \____/   \/\_/  |___| \______  / \____/  |__|   |____|      \/\_/  |___|  / \___  >\____ |
+     \/                               \/                                         \/      \/      \/
+```
 
 # howigotpwned
 
