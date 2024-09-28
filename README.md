@@ -1,3 +1,7 @@
+[![Continuous Integration](https://github.com/reinthal/leakme/actions/workflows/ci.yaml/badge.svg)](https://github.com/reinthal/leakme/actions/workflows/ci.yaml)
+[![Continuous Delivery](https://github.com/reinthal/leakme/actions/workflows/cd.yaml/badge.svg)](https://github.com/reinthal/leakme/actions/workflows/cd.yaml)
+
+
 # howigotpwned
 
 How I got pwned? What website exactly leaked my credentials and what password did I use? Thats the goal of this project
@@ -8,9 +12,15 @@ I was looking up myself in [Have I been pwned](https://haveibeenpwned.com/), a w
 
 ## Milestones
 
-- [] unrar rar files
-- [] find format of 1 file
-- [] generalize
+- [x] unrar rar files
+- [x] find format of 1 file
+- [x] generalize
+- [ ] setup sops for repo
+- [ ] rewrite dagster pipelines for pre-extracted data
+- [ ] setup dagster job
+- [ ] deploy to prod
+- [ ] make a search frontend
+
 
 ## How to install development environment (nix)
 
