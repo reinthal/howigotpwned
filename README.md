@@ -23,7 +23,7 @@ I was looking up myself in [Have I been pwned](https://haveibeenpwned.com/), a w
 - [x] unrar rar files
 - [x] find format of 1 file
 - [x] generalize
-- [ ] setup sops for repo
+- [x] setup sops for repo
 - [ ] rewrite dagster pipelines for pre-extracted data
 - [ ] setup dagster job
 - [ ] deploy to prod
