@@ -2,6 +2,7 @@
   description = "nix flake for the development environment, use direnv to load the `.envrc` file to run this environment automatically or run `nix develop` to enter this shell";
 
   inputs = {
+    devshell.url = "github:numtide/devshell";
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     poetry2nix = {
@@ -15,9 +16,15 @@
     nixpkgs,
     flake-utils,
     poetry2nix,
+    devshell,
+    ...
   }:
     flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs { system = "${system}"; config.allowUnfree = true; };
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [devshell.overlays.default];
+      };
       p2nix = import poetry2nix {inherit pkgs;};
 
       pyenv =
@@ -63,17 +70,14 @@
           pypkgs-build-requirements
       );
     in {
-      devShells.default = pkgs.mkShell {
-        buildInputs = [
-          pyenv
-	  pkgs.postgresql
-          pkgs.podman
-          pkgs.lazygit
-          pkgs.poetry
-          pkgs.cmake
-          pkgs.rar
-          pkgs.zip
-          pkgs.unzip
+      devShells.default = pkgs.devshell.mkShell {
+        devshell = {
+          packages = [
+            pyenv
+          ];
+        };
+        imports = [
+          (pkgs.devshell.importTOML ./devshell.toml)
         ];
       };
     });

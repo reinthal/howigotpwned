@@ -1,0 +1,43 @@
+# https://numtide.github.io/devshell
+[[commands]]
+category = "environment"
+package = "sops"
+
+[[commands]]
+category = "development"
+package = "poetry"
+
+[[commands]]
+category = "development"
+name = "dev"
+help = "run `dagster dev`"
+command = "dagster dev"
+
+[[commands]]
+category = "environment"
+name = "unlock"
+help = "Decrypt secrets/howigotpwned.env to .envvars"
+command = '''
+sops -d secrets/howigotpwned.env > .envvars
+'''
+
+[devshell]
+name = "howigotpwned"
+motd = '''
+{bold}{14}
+.__                      .___   ________           __   __________                              .___
+|  |__    ____  __  _  __|   | /  _____/   ____  _/  |_ \______   \__  _  __  ____    ____    __| _/
+|  |  \  /  _ \ \ \/ \/ /|   |/   \  ___  /  _ \ \   __\ |     ___/\ \/ \/ / /    \ _/ __ \  / __ | 
+|   Y  \(  <_> ) \     / |   |\    \_\  \(  <_> ) |  |   |    |     \     / |   |  \\  ___/ / /_/ | 
+|___|  / \____/   \/\_/  |___| \______  / \____/  |__|   |____|      \/\_/  |___|  / \___  >\____ | 
+     \/                               \/                                         \/      \/      \/ 
+
+{reset}
+$(type -p menu &>/dev/null && menu)
+'''
+
+packages = [
+ "unrar",
+ "zip",
+ "unzip"
+]
