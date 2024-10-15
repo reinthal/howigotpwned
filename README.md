@@ -33,11 +33,6 @@ I was looking up myself in [Have I been pwned](https://haveibeenpwned.com/), a w
 ## How to install development environment (nix)
 
 and
-
-```
-nix develop
-```
-
 with `direnv
 
 ```
@@ -45,22 +40,3 @@ direnv allow
 ```
 
 and then the environment should automatically build
-## How to install development environment
-
-Run this command to configure Snowflake credentials and install dependencies using poetry: 
-
-```bash
- chmod +x setup.sh && ./setup.sh
-```
-
-
-## How run dagster
-
-```bash
-poetry run dagster dev
-```
-
-## How to run DLT
-
-See `data_sources/README.md`
-
