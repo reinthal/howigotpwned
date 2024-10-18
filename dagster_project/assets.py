@@ -55,7 +55,7 @@ def cit0day_password_files(
             "py-io-impl": "pyiceberg.io.pyarrow.PyArrowFileIO",
             "s3.endpoint": EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT").get_value(),
             "s3.access-key-id": EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID").get_value(),
-            "s3.secret-access-key": EnvVar("DESTINATION__CATALOG__SECRET_ACCESS_KEY").get_value(),
+            "s3.secret-access-key": EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY").get_value(),
             "type": "rest"
     })
     catalog.create_namespace_if_not_exists("staging")
