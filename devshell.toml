@@ -1,5 +1,11 @@
 # https://numtide.github.io/devshell
 [[commands]]
+category = "development"
+name = "jup"
+help = "Jupyter notebook for testing code fast"
+command = "jupyter-lab --ip 0.0.0.0"
+
+[[commands]]
 category = "environment"
 package = "sops"
 
