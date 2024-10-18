@@ -42,6 +42,7 @@ s3fs = "^2024.9.0"
 duckdb = "^1.0.0"
 
 pynessie = "^0.67.0"
+fsspec = "^2024.9.0"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"
