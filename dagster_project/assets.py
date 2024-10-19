@@ -7,8 +7,9 @@ from dagster_aws.s3 import S3Resource
 from pyiceberg.catalog import load_catalog
 
 from dagster_project.partitions import password_archive_partitions_def
-from dagster_project.utils.s3_utils import get_objects
 from dagster_project.utils.iceberg_retry import append_to_table_with_retry
+from dagster_project.utils.s3_utils import get_objects
+
 RAW_BUCKET = "raw"
 FOLDER_PATH = "extracted"
 
@@ -97,5 +98,5 @@ def cit0day_password_files(
         pa_df = df.with_columns(
             (pl.lit(RAW_BUCKET)).alias("bucket"), (pl.lit(file_name)).alias("prefix")
         ).to_arrow()
-        append_to_table_with_retry(pa_df,  "staging.cit0day_password_files",catalog)
+        append_to_table_with_retry(pa_df, "staging.cit0day_password_files", catalog)
     return df

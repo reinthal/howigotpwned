@@ -1,12 +1,15 @@
 import pyarrow as pa
 from pyiceberg.catalog import Catalog
-from tenacity import wait_exponential, stop_after_attempt, retry
+from tenacity import retry, stop_after_attempt, wait_exponential
 
-def append_to_table_with_retry(pa_df: pa.Table, table_name: str, catalog: Catalog) -> None:
+
+def append_to_table_with_retry(
+    pa_df: pa.Table, table_name: str, catalog: Catalog
+) -> None:
     @retry(
         wait=wait_exponential(multiplier=1, min=4, max=32),
         stop=stop_after_attempt(20),
-        reraise=True
+        reraise=True,
     )
     def append_with_retry():
         table = catalog.load_table(table_name)

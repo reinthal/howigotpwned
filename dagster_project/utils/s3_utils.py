@@ -41,7 +41,8 @@ def test_copy_archive_to_s3():
         aws_access_key_id=EnvVar("S3_ACCESS_KEY").get_value(),
         endpoint_url=EnvVar("S3_ENDPOINT").get_value(),
     )
-    archive_path = "/home/kog/Downloads/zipcaars.com {1.170} [HASH] (Business)_special_for_XSS.IS.rar"
+    archive_path = "/home/kog/Downloads/zipcaars.com \
+            {1.170} [HASH] (Business)_special_for_XSS.IS.rar"
     copy_archive_to_s3(nas_minio, bucket_name, archive_path=archive_path)
 
 
