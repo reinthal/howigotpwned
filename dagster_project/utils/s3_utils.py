@@ -1,12 +1,11 @@
 import os
 import tempfile
-from typing import Generator
 
 import patoolib
 from dagster_aws.s3 import S3Resource
 
 
-def get_objects(source_bucket: str, prefix: str, s3: S3Resource) -> Generator:
+def get_objects(source_bucket: str, prefix: str, s3: S3Resource):
     paginator = s3.get_client().get_paginator("list_objects")
     response_iterator = paginator.paginate(Bucket=source_bucket, Prefix=prefix)
 
@@ -49,8 +48,6 @@ def test_copy_archive_to_s3():
 def test_get_objects():
     from dagster import EnvVar
 
-    bucket_name = "dev"
-
     # Connect to MinIO
     nas_minio = S3Resource(
         aws_secret_access_key=EnvVar("S3_SECRET_KEY").get_value(),
@@ -59,7 +56,8 @@ def test_get_objects():
     )
 
     source_bucket = "raw"
-    prefix = "Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]/0-de-franchise.ca {6.584} [HASH+NOHASH] (NoCategory)_special_for_XSS.IS.rar"
+    prefix = "Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]/\
+        0-de-franchise.ca {6.584} [HASH+NOHASH] (NoCategory)_special_for_XSS.IS.rar"
     objs = get_objects(source_bucket=source_bucket, prefix=prefix, s3=nas_minio)
     print(len(list(objs)))
 

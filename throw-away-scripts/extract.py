@@ -1,5 +1,7 @@
 import os
+
 import patoolib
+
 
 def extract_recursively(src_directory, output_directory):
     """
@@ -7,7 +9,6 @@ def extract_recursively(src_directory, output_directory):
     """
     for entry in os.listdir(src_directory):
         full_entry_path = os.path.join(src_directory, entry)
-        entry_output_directory = output_directory
 
         if os.path.isdir(full_entry_path):
             # If the entry is a directory, recurse into it
@@ -23,15 +24,18 @@ def extract_recursively(src_directory, output_directory):
             # If the entry is a file, attempt to extract it
             print(f"Extracting {entry} into {archive_output_directory}")
             try:
-                patoolib.extract_archive(full_entry_path, outdir=archive_output_directory)
+                patoolib.extract_archive(
+                    full_entry_path, outdir=archive_output_directory
+                )
             except Exception as e:
                 print(f"Failed to extract {entry}. Reason: {e}")
         else:
             print(f"{entry} is neither a valid file nor directory, skipping...")
 
+
 # Path to the directory containing files and directories you want to extract
-directory = '/home/kog/repos/self-hosting/data-project/Cit0day.in_special_for_xss.is'
-base_output_directory = os.path.join(directory, 'extracted')
+directory = "/home/kog/repos/self-hosting/data-project/Cit0day.in_special_for_xss.is"
+base_output_directory = os.path.join(directory, "extracted")
 
 # Ensure the base output directory exists
 if not os.path.exists(base_output_directory):
