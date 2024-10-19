@@ -1,9 +1,8 @@
-from dagster import AssetSelection, Definitions, define_asset_job
-from dagster import ScheduleDefinition
+from dagster import AssetSelection, Definitions, ScheduleDefinition, define_asset_job
 
 from dagster_project.assets import (
-    cit0day_prem_special_for_xssis_archives,
     cit0day_password_files,
+    cit0day_prem_special_for_xssis_archives,
 )
 from dagster_project.resources import nas_minio
 
