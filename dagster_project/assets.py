@@ -59,7 +59,7 @@ def cit0day_password_files(
         "default",
         **{
             "warehouse": "s3://iceberg/warehouse",
-            "uri": "https://nessie.local.reinthal.cc/iceberg",
+            "uri": f"https://nessie.local.reinthal.cc/iceberg/",
             "py-io-impl": "pyiceberg.io.pyarrow.PyArrowFileIO",
             "s3.endpoint": EnvVar(
                 "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"
@@ -71,7 +71,7 @@ def cit0day_password_files(
                 "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
             ).get_value(),
             "type": "rest",
-        }
+        },
     )
     catalog.create_namespace_if_not_exists("staging")
     catalog.create_table_if_not_exists(
