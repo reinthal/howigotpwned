@@ -59,7 +59,7 @@ def cit0day_password_files(
         "default",
         **{
             "warehouse": "s3://iceberg/warehouse",
-            "uri": f"https://nessie.local.reinthal.cc/iceberg/",
+            "uri": "https://nessie.local.reinthal.cc/iceberg/",
             "py-io-impl": "pyiceberg.io.pyarrow.PyArrowFileIO",
             "s3.endpoint": EnvVar(
                 "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"

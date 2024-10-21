@@ -8,13 +8,13 @@ package-mode = false
 
 [tool.ruff]
 # Enable flake8-bugbear (`B`) rules.
-select = ["E", "F", "B", "I"]
+lint.select = ["E", "F", "B", "I"]
 
 # Never enforce `E501` (line length violations).
 # ignore = ["E501"]
 
 # Avoid trying to fix flake8-bugbear (`B`) violations.
-unfixable = ["B"]
+lint.unfixable = ["B"]
 
 # Ignore `E402` (import violations) in a/nix/store/lrg4fqp6c2sswas4g2j75mlxwyns6rmk-python3-3.12.4-env/lib/python3.12/site-packages/dagster_webserver/nix/store/lrg4fqp6c2sswas4g2j75mlxwyns6rmk-python3-3.12.4-env/lib/python3.12/site-packages/dagster_webserverll `__init__.py` files, and in `path/to/file.py`.
 
