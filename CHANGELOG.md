@@ -1,3 +1,19 @@
+## v0.2.0 (2024-10-21)
+
+### Feat
+
+- add backoff strategy for concurrent writes
+- add schedule
+
+### Fix
+
+- update linter settings, fix lint error
+- cleanup of stale environment variables
+- lint it!
+- remove poc file from repo
+- more linting
+- linting
+
 ## v0.14.0 (2024-08-23)
 
 ### Feat
