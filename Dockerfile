@@ -28,7 +28,7 @@ COPY ${CODE_LOCATION_NAME} ${APP_DIR}/${CODE_LOCATION_NAME}
 
 ENV PATH=${VIRTUAL_ENV}/bin:$PATH
 ENV PYTHONPATH=${APP_DIR}
-
+LABEL org.opencontainers.image.source = "https://github.com/reinthal/howigotpwned" 
 # Run dagster gRPC server on port 4000
 EXPOSE 4000
 
