@@ -35,7 +35,7 @@ def cit0day_prem_special_for_xssis_archives(
 )
 def cit0day_password_files(
     context: AssetExecutionContext, s3: S3Resource
-) -> pl.DataFrame:
+) -> None:
     import pyarrow as pa
 
     pa_strings = pa.string()
@@ -99,4 +99,3 @@ def cit0day_password_files(
             (pl.lit(RAW_BUCKET)).alias("bucket"), (pl.lit(file_name)).alias("prefix")
         ).to_arrow()
         append_to_table_with_retry(pa_df, "staging.cit0day_password_files", catalog)
-    return df
