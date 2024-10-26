@@ -1,3 +1,11 @@
+## v0.3.1 (2024-10-26)
+
+### Fix
+
+- staging asset does not return a df it has side effects
+- image repository
+- add label to dockerfile and try to rebuild image
+
 ## v0.3.0 (2024-10-21)
 
 ### Feat
