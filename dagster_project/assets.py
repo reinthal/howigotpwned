@@ -31,6 +31,7 @@ def cit0day_prem_special_for_xssis_archives(
 @asset(
     partitions_def=password_archive_partitions_def,
     group_name="staging",
+    description="Staged Cit0day passwords parsed as csv separated by `:`"
     deps=[cit0day_prem_special_for_xssis_archives],
 )
 def cit0day_password_files(context: AssetExecutionContext, s3: S3Resource) -> None:

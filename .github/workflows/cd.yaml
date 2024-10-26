@@ -35,6 +35,8 @@ jobs:
             source:
               - './dagster_tests/**'
               - './dagster_project/**'
+              - './pyproject.toml'
+              - './poetry.lock'
   bump_version:
     name: "Bump version"
     runs-on: ubuntu-latest
