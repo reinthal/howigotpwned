@@ -79,7 +79,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.DOCKER_IMAGE }}
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.DOCKER_IMAGE }}
           tags: |
             type=semver,pattern={{version}},value=${{ needs.bump_version.outputs.cz_version }}
       - name: Set up QEMU
