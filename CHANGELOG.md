@@ -1,3 +1,10 @@
+## v0.3.2 (2024-10-26)
+
+### Fix
+
+- add description of cit0day staging asset
+- add missing dagster postgres
+
 ## v0.3.1 (2024-10-26)
 
 ### Fix
