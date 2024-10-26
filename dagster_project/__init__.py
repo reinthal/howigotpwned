@@ -46,6 +46,7 @@ defs = Definitions(
     resources={
         "s3": nas_minio,
         "nessie_default": NessieCatalogResource(
+            branch=EnvVar("NESSIE_BRANCH"),
             warehouse=EnvVar("NESSIE_WAREHOUSE"),
             uri=EnvVar("NESSIE_URI"),
             s3_endpoint=EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),

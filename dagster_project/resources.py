@@ -7,6 +7,7 @@ from pyiceberg.catalog import load_catalog, Catalog
 class NessieCatalogResource(ConfigurableResource):
     name: str = "default"
     warehouse: str
+    branch: str
     uri: str
     py_io_impl: str = "pyiceberg.io.pyarrow.PyArrowFileIO"
     s3_endpoint: str
@@ -19,7 +20,7 @@ class NessieCatalogResource(ConfigurableResource):
             self.name,
             **{
                 "warehouse": self.warehouse,
-                "uri": self.uri,
+                "uri": f"{self.uri}/{self.branch}",
                 "py-io-impl": self.py_io_impl,
                 "s3.endpoint": self.s3_endpoint,
                 "s3.access-key-id": self.s3_access_key_id,
