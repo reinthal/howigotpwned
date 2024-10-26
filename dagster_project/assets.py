@@ -33,9 +33,7 @@ def cit0day_prem_special_for_xssis_archives(
     group_name="staging",
     deps=[cit0day_prem_special_for_xssis_archives],
 )
-def cit0day_password_files(
-    context: AssetExecutionContext, s3: S3Resource
-) -> None:
+def cit0day_password_files(context: AssetExecutionContext, s3: S3Resource) -> None:
     import pyarrow as pa
 
     pa_strings = pa.string()
