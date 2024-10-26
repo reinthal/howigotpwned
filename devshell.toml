@@ -14,6 +14,16 @@ category = "development"
 package = "poetry"
 
 [[commands]]
+category = "data"
+command = '''
+podman pull quay.io/projectnessie/nessie-cli:0.99.0
+podman run -it quay.io/projectnessie/nessie-cli:0.99.0
+'''
+
+name="nessie-cli"
+help="Project Nessie: Transactional Catalog for Data Lakes with Git-like semantics"
+
+[[commands]]
 category = "development"
 name = "dev"
 help = "run `dagster dev`"
