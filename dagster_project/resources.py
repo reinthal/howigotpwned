@@ -5,13 +5,17 @@ from pyiceberg.catalog import Catalog, load_catalog
 
 class NessieCatalogResource(ConfigurableResource):
     name: str = "default"
-    warehouse: str
-    branch: str
-    uri: str
+    warehouse: str = EnvVar("NESSIE_WAREHOUSE")
+    branch: str = EnvVar("NESSIE_BRANCH")
+    uri: str = EnvVar("NESSIE_URI")
     py_io_impl: str = "pyiceberg.io.pyarrow.PyArrowFileIO"
-    s3_endpoint: str
-    s3_access_key_id: str
-    s3_secret_access_key: str
+    s3_endpoint: str = EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT")
+    s3_access_key_id: str = EnvVar(
+        "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"
+    )
+    s3_secret_access_key: str = EnvVar(
+        "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
+    )
     catalog_type: str = "rest"
 
     def get_catalog(self) -> Catalog:
@@ -28,6 +32,8 @@ class NessieCatalogResource(ConfigurableResource):
             },
         )
 
+
+nessie_default_catalog = NessieCatalogResource()
 
 nas_minio = S3Resource(
     aws_secret_access_key=EnvVar(
