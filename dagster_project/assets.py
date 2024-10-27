@@ -7,6 +7,7 @@ from dagster_aws.s3 import S3Resource
 
 from dagster_project.partitions import password_archive_partitions_def
 from dagster_project.resources import NessieCatalogResource
+from dagster_project.utils.passwords import create_passwords_polars_frame_from_file
 from dagster_project.utils.iceberg_retry import append_to_table_with_retry
 from dagster_project.utils.s3_utils import get_objects
 
@@ -74,13 +75,7 @@ def cit0day_password_files(
         # download the file
         file_obj = BytesIO()
         s3.get_client().download_fileobj(RAW_BUCKET, file_name, file_obj)
-        df = pl.read_csv(
-            file_obj,
-            has_header=False,
-            separator=":",
-            schema=password_files_polars_schema,
-        )
-
+        df = create_passwords_polars_frame_from_file(file_obj, password_files_polars_schema)
         pa_df = df.with_columns(
             (pl.lit(RAW_BUCKET)).alias("bucket"), (pl.lit(file_name)).alias("prefix")
         ).to_arrow()

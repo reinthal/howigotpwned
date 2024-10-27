@@ -36,7 +36,9 @@ cit0day_schedule = ScheduleDefinition(
 # Define a job that targets asset_a and all its upstream dependencies
 cit0day_job = define_asset_job(
     name="cit0day_job",
-    selection=AssetSelection.assets(cit0day_prem_special_for_xssis_archives).downstream(),
+    selection=AssetSelection.assets(
+        cit0day_prem_special_for_xssis_archives
+    ).downstream(),
 )
 
 
