@@ -20,15 +20,25 @@ I was looking up myself in [Have I been pwned](https://haveibeenpwned.com/), a w
 
 ## Milestones
 
+- [ ] add concurrency limits
+- [ ] Make a search frontend
+- [ ] Add spark/pyspark
+- [ ] Add domain column for `int_passwords` asset
+- [ ] Add categorical for type of password for `int_password`
+- [ ] Re-partition `int_passwords`
+- [x] configure nessie branch
 - [x] unrar rar files
 - [x] find format of 1 file
 - [x] generalize
 - [x] setup sops for repo
-- [ ] rewrite dagster pipelines for pre-extracted data
-- [ ] setup dagster job
-- [ ] deploy to prod
-- [ ] make a search frontend
+- [x] rewrite dagster pipelines for pre-extracted data
+- [x] setup dagster job
+- [x] deploy to prod
 
+
+# Chores
+
+- [ ] fix utf-8 encoding issue
 
 ## How to install development environment (nix)
 
