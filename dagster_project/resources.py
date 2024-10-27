@@ -1,8 +1,7 @@
 from dagster import ConfigurableResource, EnvVar
 from dagster_aws.s3 import S3Resource
 from pyiceberg.catalog import Catalog, load_catalog
-from pynessie.client import NessieClient
-from typing import Optional
+
 
 class NessieCatalogResource(ConfigurableResource):
     name: str = "default"
@@ -18,8 +17,7 @@ class NessieCatalogResource(ConfigurableResource):
         "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
     )
     catalog_type: str = "rest"
-    def get_client(self) -> Optional[NessieClient]:
-        return None
+
     def get_catalog(self) -> Catalog:
         return load_catalog(
             self.name,
