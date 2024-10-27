@@ -29,6 +29,17 @@ class NessieCatalogResource(ConfigurableResource):
         )
 
 
+nessie_default_catalog = NessieCatalogResource(
+    branch=EnvVar("NESSIE_BRANCH"),
+    warehouse=EnvVar("NESSIE_WAREHOUSE"),
+    uri=EnvVar("NESSIE_URI"),
+    s3_endpoint=EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),
+    s3_access_key_id=EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"),
+    s3_secret_access_key=EnvVar(
+        "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
+    ),
+)
+
 nas_minio = S3Resource(
     aws_secret_access_key=EnvVar(
         "SOURCES__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
