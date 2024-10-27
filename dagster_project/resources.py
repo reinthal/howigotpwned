@@ -1,5 +1,33 @@
-from dagster import EnvVar
+from dagster import ConfigurableResource, EnvVar
 from dagster_aws.s3 import S3Resource
+from pyiceberg.catalog import Catalog, load_catalog
+
+
+class NessieCatalogResource(ConfigurableResource):
+    name: str = "default"
+    warehouse: str
+    branch: str
+    uri: str
+    py_io_impl: str = "pyiceberg.io.pyarrow.PyArrowFileIO"
+    s3_endpoint: str
+    s3_access_key_id: str
+    s3_secret_access_key: str
+    catalog_type: str = "rest"
+
+    def get_catalog(self) -> Catalog:
+        return load_catalog(
+            self.name,
+            **{
+                "warehouse": self.warehouse,
+                "uri": f"{self.uri}/{self.branch}",
+                "py-io-impl": self.py_io_impl,
+                "s3.endpoint": self.s3_endpoint,
+                "s3.access-key-id": self.s3_access_key_id,
+                "s3.secret-access-key": self.s3_secret_access_key,
+                "type": self.catalog_type,
+            },
+        )
+
 
 nas_minio = S3Resource(
     aws_secret_access_key=EnvVar(
