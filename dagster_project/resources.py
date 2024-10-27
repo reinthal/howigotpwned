@@ -1,19 +1,25 @@
 from dagster import ConfigurableResource, EnvVar
 from dagster_aws.s3 import S3Resource
 from pyiceberg.catalog import Catalog, load_catalog
-
+from pynessie.client import NessieClient
+from typing import Optional
 
 class NessieCatalogResource(ConfigurableResource):
     name: str = "default"
-    warehouse: str
-    branch: str
-    uri: str
+    warehouse: str = EnvVar("NESSIE_WAREHOUSE")
+    branch: str = EnvVar("NESSIE_BRANCH")
+    uri: str = EnvVar("NESSIE_URI")
     py_io_impl: str = "pyiceberg.io.pyarrow.PyArrowFileIO"
-    s3_endpoint: str
-    s3_access_key_id: str
-    s3_secret_access_key: str
+    s3_endpoint: str = EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT")
+    s3_access_key_id: str = EnvVar(
+        "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"
+    )
+    s3_secret_access_key: str = EnvVar(
+        "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
+    )
     catalog_type: str = "rest"
-
+    def get_client(self) -> Optional[NessieClient]:
+        return None
     def get_catalog(self) -> Catalog:
         return load_catalog(
             self.name,
@@ -29,16 +35,7 @@ class NessieCatalogResource(ConfigurableResource):
         )
 
 
-nessie_default_catalog = NessieCatalogResource(
-    branch=EnvVar("NESSIE_BRANCH"),
-    warehouse=EnvVar("NESSIE_WAREHOUSE"),
-    uri=EnvVar("NESSIE_URI"),
-    s3_endpoint=EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),
-    s3_access_key_id=EnvVar("DESTINATION__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"),
-    s3_secret_access_key=EnvVar(
-        "DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
-    ),
-)
+nessie_default_catalog = NessieCatalogResource()
 
 nas_minio = S3Resource(
     aws_secret_access_key=EnvVar(

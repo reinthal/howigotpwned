@@ -27,9 +27,17 @@ job_executor = k8s_job_executor.configured(
 
 # Define a job that targets asset_a and all its upstream dependencies
 cit0day_job = define_asset_job(
-    executor_def=job_executor,
+    config={
+        "execution": {
+            "config": {
+                "multiprocess": {
+                    "max_concurrent": 10,
+                },
+            }
+        }
+    },
     name="cit0day_job",
-    selection=AssetSelection.assets(cit0day_prem_special_for_xssis_archives).upstream(),
+    selection=AssetSelection.assets(cit0day_prem_special_for_xssis_archives).downstream(),
 )
 
 
@@ -41,5 +49,5 @@ defs = Definitions(
         "nessie_default": nessie_default_catalog,
     },
     assets=[cit0day_prem_special_for_xssis_archives, cit0day_password_files],
-    executor=None if is_local_environment() else job_executor,
+    executor=None if False else job_executor,
 )  # noqa: E501
