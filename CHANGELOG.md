@@ -1,3 +1,10 @@
+## v0.4.0 (2024-10-27)
+
+### Feat
+
+- add nessie-cli
+- add nessie branch
+
 ## v0.3.4 (2024-10-27)
 
 ### Fix
