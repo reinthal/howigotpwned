@@ -16,7 +16,8 @@ job_executor = k8s_job_executor.configured(
                     "requests": {"cpu": "2", "memory": "2Gi"},
                 }
             }
-        }
+        },
+        "max_concurrent": 5,  # Set your desired limit here
     }
 )
 cit0day_schedule = ScheduleDefinition(
