@@ -1,7 +1,6 @@
-from dagster import EnvVar
+from dagster import ConfigurableResource, EnvVar
 from dagster_aws.s3 import S3Resource
-from dagster import asset, Definitions, ConfigurableResource
-from pyiceberg.catalog import load_catalog, Catalog
+from pyiceberg.catalog import Catalog, load_catalog
 
 
 class NessieCatalogResource(ConfigurableResource):

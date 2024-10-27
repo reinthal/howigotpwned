@@ -1,18 +1,17 @@
 from dagster import (
     AssetSelection,
     Definitions,
+    EnvVar,
     ScheduleDefinition,
     define_asset_job,
-    EnvVar,
 )
 from dagster_k8s import k8s_job_executor
 
-from dagster_project.resources import NessieCatalogResource
 from dagster_project.assets import (
     cit0day_password_files,
     cit0day_prem_special_for_xssis_archives,
 )
-from dagster_project.resources import nas_minio
+from dagster_project.resources import NessieCatalogResource, nas_minio
 from dagster_project.utils.environment import is_local_environment
 
 job_executor = k8s_job_executor.configured(

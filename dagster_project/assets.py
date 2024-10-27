@@ -2,10 +2,11 @@ from io import BytesIO
 from typing import List
 
 import polars as pl
-from dagster import AssetExecutionContext, EnvVar, asset
+from dagster import AssetExecutionContext, asset
 from dagster_aws.s3 import S3Resource
-from dagster_project.resources import NessieCatalogResource
+
 from dagster_project.partitions import password_archive_partitions_def
+from dagster_project.resources import NessieCatalogResource
 from dagster_project.utils.iceberg_retry import append_to_table_with_retry
 from dagster_project.utils.s3_utils import get_objects
 
