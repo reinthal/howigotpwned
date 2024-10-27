@@ -1,3 +1,9 @@
+## v0.3.4 (2024-10-27)
+
+### Fix
+
+- limit concurrent runs to 5
+
 ## v0.3.3 (2024-10-26)
 
 ### Fix
