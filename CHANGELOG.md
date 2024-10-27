@@ -1,3 +1,13 @@
+## v0.5.0 (2024-10-27)
+
+### Feat
+
+- handle latin-1 encodings
+
+### Fix
+
+- broken job
+
 ## v0.4.1 (2024-10-27)
 
 ### Fix
