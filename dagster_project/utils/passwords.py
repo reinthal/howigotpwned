@@ -1,5 +1,6 @@
-import polars as pl
 from io import BytesIO
+
+import polars as pl
 
 
 def create_passwords_polars_frame_from_file(
