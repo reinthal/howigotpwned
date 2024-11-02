@@ -1,3 +1,9 @@
+## v0.5.1 (2024-11-02)
+
+### Fix
+
+- remove kuberntes configuration
+
 ## v0.5.0 (2024-10-27)
 
 ### Feat
