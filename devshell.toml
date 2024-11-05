@@ -21,7 +21,7 @@ podman run -it quay.io/projectnessie/nessie-cli:0.99.0
 '''
 
 name="nessie-cli"
-help="Project Nessie: Transactional Catalog for Data Lakes with Git-like semantics"
+help="Project Nessie: Transactional Catalog for Data Lakes with Git-like semantics, use `Nessie> connect to https://nessie.local.reinthal.cc/api/v2` to connect."
 
 [[commands]]
 category = "development"
@@ -29,19 +29,7 @@ name = "dev"
 help = "run `dagster dev`"
 command = "dagster dev"
 
-[[commands]]
-category = "environment"
-name = "unlock"
-help = "Decrypt secrets/howigotpwned.env to .env"
-command = '''
-sops -d secrets/howigotpwned.env > .env
-REPO_ROOT=$(git rev-parse --show-toplevel)
-DAGSTER_HOME=$REPO_ROOT/dagster_home
-echo "Configuring DAGSTER_HOME to $DAGSTER_HOME"
-mkdir -p $DAGSTER_HOME
-echo "DAGSTER_HOME=$DAGSTER_HOME" >> .env
 
-'''
 
 [devshell]
 name = "howigotpwned"
