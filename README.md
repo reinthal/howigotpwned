@@ -20,7 +20,7 @@ I was looking up myself in [Have I been pwned](https://haveibeenpwned.com/), a w
 
 ## Milestones
 
-- [ ] add concurrency limits
+- [x] add concurrency limits
 - [ ] Make a search frontend
 - [ ] Add spark/pyspark
 - [ ] Add domain column for `int_passwords` asset
@@ -35,6 +35,9 @@ I was looking up myself in [Have I been pwned](https://haveibeenpwned.com/), a w
 - [x] setup dagster job
 - [x] deploy to prod
 
+# Version pins
+
+- [ ] Pinned pyiceberg, waiting for release 0.8.0
 
 # Chores
 

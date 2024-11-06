@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "leaks"
+name = "howigotpwned"
 version = "0.5.1"
 description = ""
 authors = ["kog <kognitiva@pm.me>"]
@@ -36,15 +36,13 @@ openpyxl = "^3.1.5"
 python-magic = "^0.4.27"
 patool = "^2.4.0"
 polars = "^1.6.0"
-getdaft = "^0.3.2"
-pyiceberg = { extras = ["sql-postgres"], version = "^0.7.1" }
-s3fs = "^2024.9.0"
 duckdb = "^1.0.0"
 
 pynessie = "^0.67.0"
-fsspec = "^2024.9.0"
 dagster-k8s = "^0.24.12"
 dagster-postgres = "^0.24.13"
+pyiceberg = {extras = ["s3fs"], version = "^0.7.1"}
+pyarrow = "~17.0.0"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"
