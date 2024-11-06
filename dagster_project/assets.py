@@ -81,4 +81,5 @@ def cit0day_password_files(
         pa_df = df.with_columns(
             (pl.lit(RAW_BUCKET)).alias("bucket"), (pl.lit(file_name)).alias("prefix")
         ).to_arrow()
+        context.log.info(f"Filename: {file_name}, df.shape: {df.shape}")
         append_to_table_with_retry(pa_df, "staging.cit0day_password_files", catalog)
