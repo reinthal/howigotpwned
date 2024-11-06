@@ -8,7 +8,7 @@ def append_to_table_with_retry(
 ) -> None:
     @retry(
         wait=wait_exponential(multiplier=1, min=4, max=32),
-        stop=stop_after_attempt(20),
+        stop=stop_after_attempt(4),
         reraise=True,
     )
     def append_with_retry():
