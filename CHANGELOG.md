@@ -1,3 +1,18 @@
+## v0.6.0 (2024-11-06)
+
+### Feat
+
+- **nessie**: add  how to connect to nessie
+
+### Fix
+
+- 10 is better
+- add logging
+- relax back off tries to 4 for early failure
+- add seamless sops decryption of secrets
+- update dagster credentials for destination s3
+- minio source credentials
+
 ## v0.5.1 (2024-11-02)
 
 ### Fix
