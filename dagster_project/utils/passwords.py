@@ -19,12 +19,23 @@ def create_passwords_polars_frame_from_file(
             line = line.decode("utf-8")
         except UnicodeDecodeError:
             line = line.decode("latin-1")
+
+        email = line
+        datum = ""
+        username = ""
+        domain = ""
+
         # Strip newline characters and split only on the first occurrence of :
         parts = line.strip().split(":", 1)
+        if len(parts) == 2:
+
+            email, datum = parts
+            parts2 = email.strip().split("@", 1)
         
-        email, datum = parts
-        # Get the username and domain of the email
-        username, domain = email.strip().split("@", 1)
+            if len(parts2) == 2:
+                # Get the username and domain of the email
+                username, domain = parts2
+        
         emails.append(email)
         usernames.append(username)
         domains.append(domain)
@@ -39,6 +50,7 @@ def create_passwords_polars_frame_from_file(
             "data": data,
             "bucket": [None for _ in range(0, len(emails))],
             "prefix": [None for _ in range(0, len(data))],
+            "category": [None for _ in range(0, len(data))],
         },
         schema=schema,
     )
