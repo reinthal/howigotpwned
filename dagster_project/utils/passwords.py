@@ -28,14 +28,13 @@ def create_passwords_polars_frame_from_file(
         # Strip newline characters and split only on the first occurrence of :
         parts = line.strip().split(":", 1)
         if len(parts) == 2:
-
             email, datum = parts
             parts2 = email.strip().split("@", 1)
-        
+
             if len(parts2) == 2:
                 # Get the username and domain of the email
                 username, domain = parts2
-        
+
         emails.append(email)
         usernames.append(username)
         domains.append(domain)

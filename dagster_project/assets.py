@@ -1,5 +1,5 @@
-from io import BytesIO
 import re
+from io import BytesIO
 from typing import List
 
 import polars as pl
@@ -8,13 +8,19 @@ from dagster_aws.s3 import S3Resource
 
 from dagster_project.partitions import password_archive_partitions_def
 from dagster_project.resources import NessieCatalogResource
+from dagster_project.schemas import (
+    cit0day_partition_spec,
+    cit0day_polars_schema,
+    cit0day_schema,
+)
 from dagster_project.utils.iceberg_retry import append_to_table_with_retry
 from dagster_project.utils.passwords import create_passwords_polars_frame_from_file
 from dagster_project.utils.s3_utils import get_objects
-from dagster_project.schemas import cit0day_schema, cit0day_partition_spec, cit0day_polars_schema
+
 RAW_BUCKET = "raw"
 FOLDER_PATH = "extracted"
 CATEGORY_REGEX = r".*\((?P<category>.*?)\)"
+
 
 @asset(group_name="raw")
 def cit0day_prem_special_for_xssis_archives(
@@ -46,7 +52,7 @@ def cit0day_password_files(
     catalog.create_table_if_not_exists(
         "staging.cit0day_password_files",
         schema=cit0day_schema,
-        partition_spec=cit0day_partition_spec
+        partition_spec=cit0day_partition_spec,
     )
 
     upstream_archive = context.partition_key
@@ -59,9 +65,7 @@ def cit0day_password_files(
         # download the file
         file_obj = BytesIO()
         s3.get_client().download_fileobj(RAW_BUCKET, file_name, file_obj)
-        df = create_passwords_polars_frame_from_file(
-            file_obj, cit0day_polars_schema
-        )
+        df = create_passwords_polars_frame_from_file(file_obj, cit0day_polars_schema)
 
         match = re.search(CATEGORY_REGEX, file_name)
         if match:
@@ -72,7 +76,7 @@ def cit0day_password_files(
         pa_df = df.with_columns(
             (pl.lit(RAW_BUCKET)).alias("bucket"),
             (pl.lit(file_name)).alias("prefix"),
-            (pl.lit(category).alias("category"))
+            (pl.lit(category).alias("category")),
         ).to_arrow()
         context.log.info(f"Filename: {file_name}, df.shape: {df.shape}")
         append_to_table_with_retry(pa_df, "staging.cit0day_password_files", catalog)

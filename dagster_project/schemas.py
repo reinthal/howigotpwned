@@ -1,11 +1,8 @@
-from pyiceberg.partitioning import PartitionSpec, PartitionField
+import polars as pl
+from pyiceberg.partitioning import PartitionField, PartitionSpec
 from pyiceberg.schema import Schema
 from pyiceberg.transforms import IdentityTransform
-from pyiceberg.types import (
-    StringType,
-    NestedField
-)
-import polars as pl
+from pyiceberg.types import NestedField, StringType
 
 cit0day_polars_schema = pl.Schema(
     {
@@ -33,12 +30,12 @@ cit0day_partition_spec = PartitionSpec(
         source_id=3,  # field_id for domain
         field_id=1000,  # new field_id for partition field
         transform=IdentityTransform(),
-        name="domain"
+        name="domain",
     ),
     PartitionField(
         source_id=7,  # field_id for category
         field_id=1001,  # new field_id for partition field
         transform=IdentityTransform(),
-        name="category"
-    )
+        name="category",
+    ),
 )
