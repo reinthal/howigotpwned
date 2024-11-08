@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "howigotpwned"
-version = "0.6.0"
+version = "0.7.0"
 description = ""
 authors = ["kog <kognitiva@pm.me>"]
 readme = "README.md"
