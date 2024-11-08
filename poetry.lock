@@ -5621,13 +5621,15 @@ files = [
 
 [package.dependencies]
 click = ">=7.1.1,<9.0.0"
+duckdb = {version = ">=0.5.0,<2.0.0", optional = true, markers = "extra == \"duckdb\""}
 fsspec = ">=2023.1.0,<2025.1.0"
 mmh3 = ">=4.0.0,<5.0.0"
+numpy = {version = ">=1.22.4,<2.0.0", optional = true, markers = "extra == \"pyarrow\" or extra == \"pandas\" or extra == \"duckdb\" or extra == \"ray\""}
+pyarrow = {version = ">=9.0.0,<18.0.0", optional = true, markers = "extra == \"pyarrow\" or extra == \"pandas\" or extra == \"duckdb\" or extra == \"ray\""}
 pydantic = ">=2.0,<2.4.0 || >2.4.0,<2.4.1 || >2.4.1,<3.0"
 pyparsing = ">=3.1.0,<4.0.0"
 requests = ">=2.20.0,<3.0.0"
 rich = ">=10.11.0,<14.0.0"
-s3fs = {version = ">=2023.1.0,<2024.1.0", optional = true, markers = "extra == \"s3fs\""}
 sortedcontainers = "2.4.0"
 strictyaml = ">=1.7.0,<2.0.0"
 tenacity = ">=8.2.3,<9.0.0"
@@ -8536,4 +8538,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.12"
-content-hash = "e0e360dcfa5ff809766a9f88aa55c028c7e06bc28c88cf014a2a5e2dcd323d39"
+content-hash = "8472f2ef0bef251206d86d5518d5c857a83f00ac6f392076048eee624d1b98d8"

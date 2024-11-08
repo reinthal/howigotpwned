@@ -41,7 +41,7 @@ duckdb = "^1.0.0"
 pynessie = "^0.67.0"
 dagster-k8s = "^0.24.12"
 dagster-postgres = "^0.24.13"
-pyiceberg = {extras = ["s3fs"], version = "^0.7.1"}
+pyiceberg = {extras = ["duckdb"], version = "^0.7.1"}
 pyarrow = "~17.0.0"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"

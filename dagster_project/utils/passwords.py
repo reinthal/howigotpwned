@@ -24,7 +24,7 @@ def create_passwords_polars_frame_from_file(
         
         email, datum = parts
         # Get the username and domain of the email
-        username, domain = line.strip().split("@", 1)
+        username, domain = email.strip().split("@", 1)
         emails.append(email)
         usernames.append(username)
         domains.append(domain)
