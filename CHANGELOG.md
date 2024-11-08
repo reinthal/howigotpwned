@@ -1,3 +1,9 @@
+## v0.7.0 (2024-11-08)
+
+### Feat
+
+- **dev**: add harlequin for querying data
+
 ## v0.6.0 (2024-11-06)
 
 ### Feat
