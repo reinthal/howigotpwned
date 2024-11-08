@@ -46,6 +46,8 @@ def cit0day_password_files(
     password_files_pyarrow_schema = pa.schema(
         [
             ("email", pa_strings),
+            ("username", pa_strings),
+            ("domain", pa_strings),
             ("data", pa_strings),
             ("bucket", pa_strings),
             ("prefix", pa_strings),
@@ -54,6 +56,8 @@ def cit0day_password_files(
     password_files_polars_schema = pl.Schema(
         {
             "email": pl.String(),
+            "username": pl.String(),
+            "domain": pl.String(),
             "data": pl.String(),
             "bucket": pl.String(),
             "prefix": pl.String(),

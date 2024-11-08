@@ -8,7 +8,8 @@ def create_passwords_polars_frame_from_file(
 ) -> pl.DataFrame:
     # Prepare lists to store each column data
     emails = []
-
+    usernames = []
+    domains = []
     data = []
 
     # Open the file and process each line
@@ -20,15 +21,21 @@ def create_passwords_polars_frame_from_file(
             line = line.decode("latin-1")
         # Strip newline characters and split only on the first occurrence of :
         parts = line.strip().split(":", 1)
-        if len(parts) == 2:  # Ensure there are exactly two parts
-            email, datum = parts
-            emails.append(email)
-            data.append(datum)
+        
+        email, datum = parts
+        # Get the username and domain of the email
+        username, domain = line.strip().split("@", 1)
+        emails.append(email)
+        usernames.append(username)
+        domains.append(domain)
+        data.append(datum)
 
     # Create a Polars DataFrame
     df = pl.DataFrame(
         {
             "email": emails,
+            "username": usernames,
+            "domain": domains,
             "data": data,
             "bucket": [None for _ in range(0, len(emails))],
             "prefix": [None for _ in range(0, len(data))],
