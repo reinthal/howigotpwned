@@ -1,3 +1,10 @@
+## v1.1.0 (2024-11-09)
+
+### Feat
+
+- **cit0day**: simplify asset partitions
+- **cit0day**: decimate dagster partitions
+
 ## v1.0.1 (2024-11-09)
 
 ### Fix
