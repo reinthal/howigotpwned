@@ -57,7 +57,7 @@ def cit0day_password_files(
 
     upstream_archive = context.partition_key
     objs = get_objects(source_bucket=RAW_BUCKET, prefix=upstream_archive, s3=s3)
-
+    dfs = pl.DataFrame(schema=cit0day_polars_schema)
     for obj in objs:
         context.log.info(obj)
         # - file name
@@ -73,10 +73,14 @@ def cit0day_password_files(
         else:
             category = "no category"
 
-        pa_df = df.with_columns(
+        df = df.with_columns(
             (pl.lit(RAW_BUCKET)).alias("bucket"),
             (pl.lit(file_name)).alias("prefix"),
             (pl.lit(category).alias("category")),
-        ).to_arrow()
+        )
         context.log.info(f"Filename: {file_name}, df.shape: {df.shape}")
-        append_to_table_with_retry(pa_df, "staging.cit0day_password_files", catalog)
+        dfs = pl.concat([dfs, df])
+
+    append_to_table_with_retry(
+        dfs.to_arrow(), "staging.cit0day_password_files", catalog
+    )
