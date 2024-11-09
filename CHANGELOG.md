@@ -1,3 +1,9 @@
+## v1.0.0 (2024-11-09)
+
+### Feat
+
+- **cit0day**: add schemas for table
+
 ## v0.8.0 (2024-11-09)
 
 ### Feat
