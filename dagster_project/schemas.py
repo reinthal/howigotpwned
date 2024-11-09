@@ -8,17 +8,20 @@ cit0day_polars_schema = pl.Schema(
     {
         "email": pl.String(),
         "username": pl.String(),
-        "domain": pl.String(),
+        "email_domain": pl.String(),
         "data": pl.String(),
         "bucket": pl.String(),
         "prefix": pl.String(),
         "category": pl.String(),
     }
 )
+# Add a cit0day schema
 cit0day_schema = Schema(
     NestedField(field_id=1, name="email", field_type=StringType(), required=False),
     NestedField(field_id=2, name="username", field_type=StringType(), required=False),
-    NestedField(field_id=3, name="domain", field_type=StringType(), required=False),
+    NestedField(
+        field_id=3, name="email_domain", field_type=StringType(), required=False
+    ),
     NestedField(field_id=4, name="data", field_type=StringType(), required=False),
     NestedField(field_id=5, name="bucket", field_type=StringType(), required=False),
     NestedField(field_id=6, name="prefix", field_type=StringType(), required=False),
@@ -27,10 +30,10 @@ cit0day_schema = Schema(
 
 cit0day_partition_spec = PartitionSpec(
     PartitionField(
-        source_id=3,  # field_id for domain
+        source_id=3,  # field_id for email_domain
         field_id=1000,  # new field_id for partition field
         transform=IdentityTransform(),
-        name="domain",
+        name="email_domain",
     ),
     PartitionField(
         source_id=7,  # field_id for category

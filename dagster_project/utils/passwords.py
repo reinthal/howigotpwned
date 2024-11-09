@@ -9,7 +9,7 @@ def create_passwords_polars_frame_from_file(
     # Prepare lists to store each column data
     emails = []
     usernames = []
-    domains = []
+    email_domains = []
     data = []
 
     # Open the file and process each line
@@ -37,7 +37,7 @@ def create_passwords_polars_frame_from_file(
 
         emails.append(email)
         usernames.append(username)
-        domains.append(domain)
+        email_domains.append(domain)
         data.append(datum)
 
     # Create a Polars DataFrame
@@ -45,9 +45,9 @@ def create_passwords_polars_frame_from_file(
         {
             "email": emails,
             "username": usernames,
-            "domain": domains,
+            "email_domain": email_domains,
             "data": data,
-            "bucket": [None for _ in range(0, len(emails))],
+            "bucket": [None for _ in range(0, len(data))],
             "prefix": [None for _ in range(0, len(data))],
             "category": [None for _ in range(0, len(data))],
         },
