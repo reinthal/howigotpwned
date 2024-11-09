@@ -1,3 +1,9 @@
+## v1.0.1 (2024-11-09)
+
+### Fix
+
+- **cit0day**: remove population of the dynamic partitions from the job as it causes partitions to fail
+
 ## v1.0.0 (2024-11-09)
 
 ### Feat
