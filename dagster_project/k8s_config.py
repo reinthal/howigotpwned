@@ -1,6 +1,5 @@
 from dagster_k8s import k8s_job_executor
 
-
 job_ttl = {
     "dagster-k8s/config": {
         "job_spec_config": {"ttl_seconds_after_finished": 60}  # Set TTL to 1 minute
