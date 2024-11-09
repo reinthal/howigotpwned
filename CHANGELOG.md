@@ -1,3 +1,9 @@
+## v1.1.1 (2024-11-09)
+
+### Fix
+
+- **k8s**: relax resource allocation for improved speedz
+
 ## v1.1.0 (2024-11-09)
 
 ### Feat
