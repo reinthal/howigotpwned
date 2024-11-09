@@ -1,3 +1,17 @@
+## v0.8.0 (2024-11-09)
+
+### Feat
+
+- **dagster**: add ttl
+- **cit0day**: add category
+- **cit0day**: add domain and username veryfi with duckdb
+- **cit0day**: add domain and username
+- add sql interface
+
+### Fix
+
+- **dagster**: update dagster k8s config to clean up after itself
+
 ## v0.7.0 (2024-11-08)
 
 ### Feat
