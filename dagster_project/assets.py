@@ -15,7 +15,7 @@ from dagster_project.schemas import (
 )
 from dagster_project.utils.iceberg_retry import append_to_table_with_retry
 from dagster_project.utils.passwords import create_passwords_polars_frame_from_file
-from dagster_project.utils.s3_utils import get_objects, get_directories
+from dagster_project.utils.s3_utils import get_directories, get_objects
 
 RAW_BUCKET = "raw"
 FOLDER_PATH = "extracted"
