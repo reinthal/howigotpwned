@@ -15,7 +15,7 @@ from dagster_project.schemas import (
 )
 from dagster_project.utils.iceberg_retry import append_to_table_with_retry
 from dagster_project.utils.passwords import create_passwords_polars_frame_from_file
-from dagster_project.utils.s3_utils import get_objects
+from dagster_project.utils.s3_utils import get_objects, get_directories
 
 RAW_BUCKET = "raw"
 FOLDER_PATH = "extracted"
@@ -27,7 +27,7 @@ def cit0day_prem_special_for_xssis_archives(
     context: AssetExecutionContext, s3: S3Resource
 ) -> List[str]:
     """Asset for all password dump archives"""
-    archives = get_objects(source_bucket=RAW_BUCKET, prefix=FOLDER_PATH, s3=s3)
+    archives = get_directories(source_bucket=RAW_BUCKET, prefix=FOLDER_PATH, s3=s3)
 
     context.instance.add_dynamic_partitions(
         password_archive_partitions_def.name, partition_keys=archives
