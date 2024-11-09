@@ -1,11 +1,25 @@
 import os
 import tempfile
+from typing import List
 
 import patoolib
 from dagster_aws.s3 import S3Resource
 
 
-def get_objects(source_bucket: str, prefix: str, s3: S3Resource):
+def get_directories(source_bucket: str, prefix: str, s3: S3Resource) -> List[str]:
+    def _get_dirs(archives):
+        directories = []
+        for a in archives:
+            parts = a.rsplit("/", 1)
+            directory = parts[0] if len(parts) > 1 else ""
+            directories.append(directory)
+        return list(set(directories))
+
+    archives = get_objects(source_bucket, prefix, s3)
+    return _get_dirs(archives)
+
+
+def get_objects(source_bucket: str, prefix: str, s3: S3Resource) -> List[str]:
     paginator = s3.get_client().get_paginator("list_objects")
     response_iterator = paginator.paginate(Bucket=source_bucket, Prefix=prefix)
 
