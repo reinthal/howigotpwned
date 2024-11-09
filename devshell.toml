@@ -10,6 +10,10 @@ category = "environment"
 package = "sops"
 
 [[commands]]
+category = "environment"
+package = "kubectl"
+
+[[commands]]
 category = "development"
 package = "poetry"
 
@@ -19,9 +23,19 @@ command = '''
 podman pull quay.io/projectnessie/nessie-cli:0.99.0
 podman run -it quay.io/projectnessie/nessie-cli:0.99.0
 '''
-
 name="nessie-cli"
 help="Project Nessie: Transactional Catalog for Data Lakes with Git-like semantics, use `Nessie> connect to https://nessie.local.reinthal.cc/api/v2` to connect."
+
+
+[[commands]]
+category = "data"
+command = '''
+kubectl port-forward -n trino service/trino-cluster-trino 27015:8080  1>/dev/null &
+harlequin -a trino -h localhost -p 27015 -U trino
+pkill kubectl -9
+'''
+name='sql'
+help = "Connect to Trino sql server"
 
 [[commands]]
 category = "development"
