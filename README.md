@@ -21,6 +21,7 @@ I was looking up myself in [Have I been pwned](https://haveibeenpwned.com/), a w
 ## Milestones
 
 - [x] add concurrency limits
+- [ ] Minio/Nessie garbage collection AWS_REGION
 - [ ] Make a search frontend
 - [ ] Add spark/pyspark
 - [x] Add domain column for `int_passwords` asset
