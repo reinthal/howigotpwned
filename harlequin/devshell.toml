@@ -1,0 +1,37 @@
+[[commands]]
+category = "environment"
+package = "kubectl"
+
+[[commands]]
+category = "data"
+command = '''
+podman pull quay.io/projectnessie/nessie-cli:0.99.0
+podman run -it quay.io/projectnessie/nessie-cli:0.99.0
+'''
+name="nessie-cli"
+help="Project Nessie: Transactional Catalog for Data Lakes with Git-like semantics, use `Nessie> connect to https://nessie.local.reinthal.cc/api/v2` to connect."
+
+
+[[commands]]
+category = "data"
+command = '''
+kubectl port-forward -n trino service/trino-cluster-trino 27015:8080  1>/dev/null &
+harlequin -a trino -h localhost -p 27015 -U trino
+pkill kubectl -9
+'''
+name='sql'
+help = "Connect to Trino sql server"
+
+[devshell]
+name = "harlequin"
+motd = '''
+{bold}{14}
+ _                _                  _       
+| |__   __ _ _ __| | ___  __ _ _   _(_)_ __  
+| '_ \ / _` | '__| |/ _ \/ _` | | | | | '_ \ 
+| | | | (_| | |  | |  __/ (_| | |_| | | | | |
+|_| |_|\__,_|_|  |_|\___|\__, |\__,_|_|_| |_|
+                            |_|              
+{reset}
+$(type -p menu &>/dev/null && menu)
+'''

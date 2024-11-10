@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "howigotpwned"
+version = "0.7.0"
+description = ""
+authors = ["kog <kognitiva@pm.me>"]
+readme = "README.md"
+package-mode = false
+
+[tool.ruff]
+# Enable flake8-bugbear (`B`) rules.
+lint.select = ["E", "F", "B", "I"]
+
+# Never enforce `E501` (line length violations).
+# ignore = ["E501"]
+
+# Avoid trying to fix flake8-bugbear (`B`) violations.
+lint.unfixable = ["B"]
+
+# Ignore `E402` (import violations) in a/nix/store/lrg4fqp6c2sswas4g2j75mlxwyns6rmk-python3-3.12.4-env/lib/python3.12/site-packages/dagster_webserver/nix/store/lrg4fqp6c2sswas4g2j75mlxwyns6rmk-python3-3.12.4-env/lib/python3.12/site-packages/dagster_webserverll `__init__.py` files, and in `path/to/file.py`.
+
+
+[per-file-ignores]
+"__init__.py" = ["E402", "F401"]
+
+[tool.poetry.dependencies]
+python = "~3.12"
+pynessie = "^0.67.0"
+
+[tool.poetry.group.dev.dependencies]
+harlequin-trino = "^0.1.3"
+
+[tool.poetry.group.test.dependencies]
+ruff = "~0.0.270"
+black = "~23.12.0"
+pytest = "^8.3.2"
+pytest-cov = "~4.1.0"
+sqlfluff = "~2.1.1"
+sqlfluff-templater-dbt = "~2.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver2"
+version_provider = "poetry"
+update_changelog_on_bump = true
