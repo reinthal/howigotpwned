@@ -15,9 +15,12 @@ import polars as pl
 
 source_directory = "/mnt/data/kog/Cit0day Prem [_special_for_xss.is]/"
 destination_directory = "/mnt/data/kog/parquetes/"
+from pathlib import Path
 
-file_paths = glob.glob(os.path.join(source_directory, "*"))
-file_paths = [f for f in file_paths if os.path.isfile(f)]
+source_directory = Path("/mnt/data/kog/Cit0day Prem [_special_for_xss.is]/")
+file_paths = list(source_directory.rglob("*"))  # rglob is recursive glob
+
+file_paths = [str(f) for f in file_paths if os.path.isfile(f)]
 
 # Ensure the destination directory exists
 os.makedirs(destination_directory, exist_ok=True)
@@ -48,9 +51,7 @@ def main():
                 (pl.lit(file_name)).alias("prefix"),
                 (pl.lit(category).alias("category")),
             )
-            if (
-                dfs.memory_usage(deep=True) > 300 * 1024**2
-            ):  # deep=True for accurate size
+            if dfs.estimated_size("mb") > 300.0:
                 uid = uuid.uuid4()  # Define how to generate a unique identifier
                 output_file = os.path.join(destination_directory, f"{uid}.parquet")
                 dfs.write_parquet(output_file)
@@ -58,3 +59,7 @@ def main():
                 dfs = pl.DataFrame(schema=cit0day_polars_schema)  # Reset the DataFrame
             else:
                 dfs = pl.concat([dfs, df])
+
+
+if __name__ == "__main__":
+    main()
