@@ -71,11 +71,11 @@ def cit0day_as_parquet(context: AssetExecutionContext, nas_minio: S3Resource):
             pbar.update(1)
 
 @asset(group_name="raw")
-def cit0day_prem_special_for_xssis_archives(
+def cit0day_parquets(
     context: AssetExecutionContext, nas_minio: S3Resource
 ) -> List[str]:
-    """Asset for all password dump archives"""
-    archives = get_directories(source_bucket=RAW_BUCKET, prefix=FOLDER_PATH,\
+    """Parquet asset for all password dump archives"""
+    archives = get_directories(source_bucket=RAW_BUCKET, prefix="parquets",\
          s3=nas_minio)
 
     context.instance.add_dynamic_partitions(
@@ -84,12 +84,11 @@ def cit0day_prem_special_for_xssis_archives(
     return archives
 
 
-# get all objects in raw
 @asset(
     partitions_def=password_archive_partitions_def,
     group_name="staging",
     description="Staged Cit0day passwords parsed as csv separated by `:`",
-    deps=[cit0day_prem_special_for_xssis_archives],
+    deps=[cit0day_parquets],
 )
 def cit0day_password_files(
     context: AssetExecutionContext,
@@ -105,30 +104,16 @@ def cit0day_password_files(
     )
 
     upstream_archive = context.partition_key
-    objs = get_objects(source_bucket=RAW_BUCKET, prefix=upstream_archive, s3=nas_minio)
+    obj = get_objects(source_bucket=RAW_BUCKET, prefix=upstream_archive, s3=nas_minio)
     dfs = pl.DataFrame(schema=cit0day_polars_schema)
-    for obj in objs:
-        context.log.info(obj)
-        # - file name
-        file_name = obj
-        # download the file
-        file_obj = BytesIO()
-        nas_minio.get_client().download_fileobj(RAW_BUCKET, file_name, file_obj)
-        df = create_passwords_polars_frame_from_file(file_obj, cit0day_polars_schema)
-
-        match = re.search(CATEGORY_REGEX, file_name)
-        if match:
-            category = match.group("category")
-        else:
-            category = "no category"
-
-        df = df.with_columns(
-            (pl.lit(RAW_BUCKET)).alias("bucket"),
-            (pl.lit(file_name)).alias("prefix"),
-            (pl.lit(category).alias("category")),
-        )
-        context.log.info(f"Filename: {file_name}, df.shape: {df.shape}")
-        dfs = pl.concat([dfs, df])
+    context.log.info(obj)
+    # - file name
+    file_name = obj
+    # download the file
+    file_obj = BytesIO()
+    nas_minio.get_client().download_fileobj(RAW_BUCKET, file_name, file_obj)
+    df = pl.read_parquet(file_obj)
+    context.log.info(f"Filename: {file_name}, df.shape: {df.shape}")
 
     append_to_table_with_retry(
         dfs.to_arrow(), "staging.cit0day_password_files", catalog
