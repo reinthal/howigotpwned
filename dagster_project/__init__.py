@@ -2,8 +2,8 @@ from dagster import Definitions
 
 from dagster_project.assets import (
     cit0day_as_parquet,
+    cit0day_parquets,
     cit0day_password_files,
-    cit0day_prem_special_for_xssis_archives,
 )
 from dagster_project.jobs import cit0day_job
 from dagster_project.k8s_config import job_executor
@@ -18,7 +18,7 @@ defs = Definitions(
         "nessie_default": nessie_default_catalog,
     },
     assets=[
-        cit0day_prem_special_for_xssis_archives, 
+        cit0day_parquets, 
         cit0day_password_files,
         cit0day_as_parquet,
     ],

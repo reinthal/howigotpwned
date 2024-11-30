@@ -70,9 +70,9 @@ def cit0day_as_parquet(context: AssetExecutionContext, nas_minio: S3Resource):
                 dfs = pl.concat([dfs, df])
             pbar.update(1)
 
-@asset(group_name="raw")
+@asset(group_name="raw", deps=[cit0day_as_parquet])
 def cit0day_parquets(
-    context: AssetExecutionContext, nas_minio: S3Resource
+    context: AssetExecutionContext, nas_minio: S3Resource, 
 ) -> List[str]:
     """Parquet asset for all password dump archives"""
     archives = get_directories(source_bucket=RAW_BUCKET, prefix="parquets",\
