@@ -45,17 +45,15 @@ def copy_archive_to_s3(
 
 
 def test_copy_archive_to_s3():
-    from dagster import EnvVar
-
     bucket_name = "dev"
 
     # Connect to MinIO
     nas_minio = S3Resource(
-        aws_secret_access_key=EnvVar(
+        aws_secret_access_key=os.getenv(
             "SOURCES__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
         ),
-        aws_access_key_id=EnvVar("SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"),
-        endpoint_url=EnvVar("SOURCES__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),
+        aws_access_key_id=os.getenv("SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"),
+        endpoint_url=os.getenv("SOURCES__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),
     )
     archive_path = "/home/kog/Downloads/zipcaars.com \
             {1.170} [HASH] (Business)_special_for_XSS.IS.rar"
@@ -63,15 +61,14 @@ def test_copy_archive_to_s3():
 
 
 def test_get_objects():
-    from dagster import EnvVar
-
+    import os
     # Connect to MinIO
     nas_minio = S3Resource(
-        aws_secret_access_key=EnvVar(
+        aws_secret_access_key=os.getenv(
             "SOURCES__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
         ),
-        aws_access_key_id=EnvVar("SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"),
-        endpoint_url=EnvVar("SOURCES__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),
+        aws_access_key_id=os.getenv("SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"),
+        endpoint_url=os.getenv("SOURCES__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),
     )
     source_bucket = "raw"
     prefix = "Cit0/Cit0day.in_special_for_xss.is/Cit0day Prem [_special_for_xss.is]/\
