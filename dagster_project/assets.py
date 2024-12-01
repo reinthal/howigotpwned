@@ -15,6 +15,7 @@ from dagster_project.partitions import password_archive_partitions_def
 from dagster_project.resources import NessieCatalogResource
 from dagster_project.schemas import (
     cit0day_partition_spec,
+    cit0day_sort_order,
     cit0day_polars_schema,
     cit0day_schema,
 )
@@ -75,7 +76,7 @@ def cit0day_parquets(
     context: AssetExecutionContext, nas_minio: S3Resource, 
 ) -> List[str]:
     """Parquet asset for all password dump archives"""
-    archives = get_directories(source_bucket=RAW_BUCKET, prefix="parquets",\
+    archives = get_objects(source_bucket=RAW_BUCKET, prefix="parquets",\
          s3=nas_minio)
 
     context.instance.add_dynamic_partitions(
@@ -101,20 +102,19 @@ def cit0day_password_files(
         "staging.cit0day_password_files",
         schema=cit0day_schema,
         partition_spec=cit0day_partition_spec,
+        sort_order=cit0day_sort_order,
     )
-
     upstream_archive = context.partition_key
-    obj = get_objects(source_bucket=RAW_BUCKET, prefix=upstream_archive, s3=nas_minio)
     dfs = pl.DataFrame(schema=cit0day_polars_schema)
-    context.log.info(obj)
-    # - file name
-    file_name = obj
     # download the file
     file_obj = BytesIO()
-    nas_minio.get_client().download_fileobj(RAW_BUCKET, file_name, file_obj)
+    nas_minio.get_client().download_fileobj(RAW_BUCKET, upstream_archive, file_obj)
+    file_obj.seek(0)
     df = pl.read_parquet(file_obj)
-    context.log.info(f"Filename: {file_name}, df.shape: {df.shape}")
-
+    context.log.info(df.head())
+    context.log.info(f"Filename: {upstream_archive}, df.shape: {df.shape}")
+    pa_df = dfs.to_arrow()
+    context.log.info(f"Pyarrow frame, {pa_df.shape}")
     append_to_table_with_retry(
-        dfs.to_arrow(), "staging.cit0day_password_files", catalog
+        pa_df, "staging.cit0day_password_files", catalog
     )

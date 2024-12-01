@@ -1,6 +1,7 @@
 import polars as pl
 from pyiceberg.partitioning import PartitionField, PartitionSpec
 from pyiceberg.schema import Schema
+from pyiceberg.table.sorting import SortField, SortOrder
 from pyiceberg.transforms import IdentityTransform
 from pyiceberg.types import NestedField, StringType
 
@@ -28,13 +29,9 @@ cit0day_schema = Schema(
     NestedField(field_id=7, name="category", field_type=StringType(), required=False),
 )
 
+cit0day_sort_order = SortOrder(SortField(source_id=1, transform=IdentityTransform()))
+
 cit0day_partition_spec = PartitionSpec(
-    PartitionField(
-        source_id=3,  # field_id for email_domain
-        field_id=1000,  # new field_id for partition field
-        transform=IdentityTransform(),
-        name="email_domain",
-    ),
     PartitionField(
         source_id=7,  # field_id for category
         field_id=1001,  # new field_id for partition field
