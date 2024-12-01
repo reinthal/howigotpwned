@@ -3,6 +3,12 @@ from dagster_aws.s3 import S3Resource
 from pyiceberg.catalog import Catalog, load_catalog
 
 
+class ElasticResource(ConfigurableResource):
+    url: str = "https://elastic.local.reinthal.cc"
+    username: str = EnvVar("ELASTIC_USERNAME")
+    password: str = EnvVar("ELASTIC_PASSWORD")
+    password_index: str = EnvVar("ELASTIC_PASSWORD_INDEX")
+
 class NessieCatalogResource(ConfigurableResource):
     name: str = "default"
     warehouse: str = EnvVar("NESSIE_WAREHOUSE")
@@ -34,7 +40,7 @@ class NessieCatalogResource(ConfigurableResource):
 
 
 nessie_default_catalog = NessieCatalogResource()
-
+elastic = ElasticResource()
 nas_minio = S3Resource(
     aws_secret_access_key=EnvVar(
         "SOURCES__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"

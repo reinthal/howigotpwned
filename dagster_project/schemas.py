@@ -3,7 +3,7 @@ from pyiceberg.partitioning import PartitionField, PartitionSpec
 from pyiceberg.schema import Schema
 from pyiceberg.table.sorting import SortField, SortOrder
 from pyiceberg.transforms import IdentityTransform
-from pyiceberg.types import NestedField, StringType
+from pyiceberg.types import DateType, NestedField, StringType
 
 cit0day_polars_schema = pl.Schema(
     {
@@ -14,6 +14,7 @@ cit0day_polars_schema = pl.Schema(
         "bucket": pl.String(),
         "prefix": pl.String(),
         "category": pl.String(),
+        "date":  pl.Date()
     }
 )
 # Add a cit0day schema
@@ -27,7 +28,43 @@ cit0day_schema = Schema(
     NestedField(field_id=5, name="bucket", field_type=StringType(), required=False),
     NestedField(field_id=6, name="prefix", field_type=StringType(), required=False),
     NestedField(field_id=7, name="category", field_type=StringType(), required=False),
+    NestedField(field_id=7, name="date", field_type=DateType(), required=False),
 )
+
+# Define the index name
+index_name = "cit0day_index"
+
+# Define the index mappings
+mapping = {
+    "mappings": {
+        "properties": {
+            "email": {
+                "type": "text",  # or "keyword" if you want exact matches
+            },
+            "username": {
+                "type": "text",
+            },
+            "email_domain": {
+                "type": "text",  # or "keyword" if you want exact matches
+            },
+            "data": {
+                "type": "text",
+            },
+            "bucket": {
+                "type": "keyword",  # or "keyword" if you want exact matches
+            },
+            "prefix": {
+                "type": "keyword",  # or "keyword" if you want exact matches
+            },
+            "category": {
+                "type": "keyword",  # keyword will be better for exact matches
+            },
+            "date": {
+                "type": "date",
+            }
+        }
+    }
+}
 
 cit0day_sort_order = SortOrder(SortField(source_id=1, transform=IdentityTransform()))
 
