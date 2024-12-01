@@ -29,6 +29,8 @@ from dagster_project.utils.s3_utils import (
 RAW_BUCKET = "raw"
 FOLDER_PATH = "extracted"
 CATEGORY_REGEX = r".*\((?P<category>.*?)\)"
+# How much data to load before flush to parquet
+PARQUET_ESTIMATE_SIZE=500.0
 
 @asset(group_name="raw")
 def cit0day_as_parquet(context: AssetExecutionContext, nas_minio: S3Resource):
@@ -55,8 +57,9 @@ def cit0day_as_parquet(context: AssetExecutionContext, nas_minio: S3Resource):
                 (pl.lit(category).alias("category")),
             )
             dfs = pl.concat([dfs, df])
-            if dfs.estimated_size("mb") > 300.0 or obj is obj[-1]:
-                uid = uuid.uuid4()  # Define how to generate a unique identifier
+            # Flush when file gets large enough or last object in list
+            if dfs.estimated_size("mb") > PARQUET_ESTIMATE_SIZE or obj is obj[-1]:
+                uid = uuid.uuid4()
                 buffer = BytesIO()
                 dfs.write_parquet(buffer)
                 buffer.seek(0)
@@ -66,7 +69,7 @@ def cit0day_as_parquet(context: AssetExecutionContext, nas_minio: S3Resource):
                     Esitmated file sizes: {dfs.estimated_size("mb") }")
                 dfs = pl.DataFrame(schema=cit0day_polars_schema)  # Reset the DataFrame
                 context.log.info(f'Progress: {pbar.n}/{pbar.total} \
-                ({pbar.n / pbar.total * 100:.2f}%)')
+                ({pbar.n / pbar.total * 100:.2f}%)') # Print status
             else:
                 dfs = pl.concat([dfs, df])
             pbar.update(1)
