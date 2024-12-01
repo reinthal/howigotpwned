@@ -108,15 +108,14 @@ def cit0day_password_files(
         sort_order=cit0day_sort_order,
     )
     upstream_archive = context.partition_key
-    dfs = pl.DataFrame(schema=cit0day_polars_schema)
     # download the file
     file_obj = BytesIO()
     nas_minio.get_client().download_fileobj(RAW_BUCKET, upstream_archive, file_obj)
     file_obj.seek(0)
     df = pl.read_parquet(file_obj)
+    pa_df = df.to_arrow()
     context.log.info(df.head())
     context.log.info(f"Filename: {upstream_archive}, df.shape: {df.shape}")
-    pa_df = dfs.to_arrow()
     context.log.info(f"Pyarrow frame, {pa_df.shape}")
     append_to_table_with_retry(
         pa_df, "staging.cit0day_password_files", catalog
