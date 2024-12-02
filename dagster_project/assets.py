@@ -104,12 +104,9 @@ def cit0day_elastic_passwords(
 ) -> None:
     upstream_archive = context.partition_key
 
-    # Instantiate elastic 
+    # Instantiate elastic
 
-    client: Elasticsearch = Elasticsearch(
-        hosts=[elastic.url], \
-        api_key=elastic.api_key
-    )
+    client: Elasticsearch = Elasticsearch(hosts=[elastic.url], api_key=elastic.api_key)
     # download the file
     file_obj = BytesIO()
     nas_minio.get_client().download_fileobj(RAW_BUCKET, upstream_archive, file_obj)
@@ -117,9 +114,7 @@ def cit0day_elastic_passwords(
     df = pl.read_parquet(file_obj)
 
     if not client.indices.exists(index=elastic.password_index):
-        client.indices.create(
-            index=elastic.password_index, body=passwords_mappings
-        )
+        client.indices.create(index=elastic.password_index, body=passwords_mappings)
         context.log.info(f"Index '{elastic.password_index}' created successfully!")
 
     context.log.info(df.head())

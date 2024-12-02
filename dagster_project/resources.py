@@ -1,6 +1,5 @@
 from dagster import ConfigurableResource, EnvVar
 from dagster_aws.s3 import S3Resource
-from elasticsearch import Elasticsearch
 from pyiceberg.catalog import Catalog, load_catalog
 
 
