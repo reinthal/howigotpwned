@@ -1,3 +1,27 @@
+## v1.2.0 (2024-12-02)
+
+### Feat
+
+- add elastic functionality
+- add elastic index mapping
+- add elastic
+- add to parquet script
+- add sql ide
+
+### Fix
+
+- update resource to use api key
+- bug in systdme
+- bug in new asset pushing the wrong frame
+- remove email partition
+- fix broken one time script
+- fix data
+
+### Refactor
+
+- instantiate client in asset instead
+- **cit0day**: paremetrize flush size, add clarifying comment
+
 ## v1.1.1 (2024-11-09)
 
 ### Fix
