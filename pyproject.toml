@@ -43,6 +43,7 @@ dagster-k8s = "^0.24.12"
 dagster-postgres = "^0.24.13"
 pyiceberg = {extras = ["duckdb"], version = "^0.7.1"}
 pyarrow = "~17.0.0"
+elasticsearch = "^8.16.0"
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^4.2.3"
 ipython = "^8.18.0"
