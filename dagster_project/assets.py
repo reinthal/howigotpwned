@@ -6,7 +6,7 @@ from typing import List
 import polars as pl
 from dagster import AssetExecutionContext, asset
 from dagster_aws.s3 import S3Resource
-from elasticsearch import helpers
+from elasticsearch import Elasticsearch, helpers
 from tqdm import tqdm
 
 from dagster_project.partitions import password_archive_partitions_def
@@ -103,14 +103,21 @@ def cit0day_elastic_passwords(
     context: AssetExecutionContext, nas_minio: S3Resource, elastic: ElasticResource
 ) -> None:
     upstream_archive = context.partition_key
+
+    # Instantiate elastic 
+
+    client: Elasticsearch = Elasticsearch(
+        hosts=[elastic.url], \
+        api_key=elastic.api_key
+    )
     # download the file
     file_obj = BytesIO()
     nas_minio.get_client().download_fileobj(RAW_BUCKET, upstream_archive, file_obj)
     file_obj.seek(0)
     df = pl.read_parquet(file_obj)
 
-    if not elastic.client.indices.exists(index=elastic.password_index):
-        elastic.client.indices.create(
+    if not client.indices.exists(index=elastic.password_index):
+        client.indices.create(
             index=elastic.password_index, body=passwords_mappings
         )
         context.log.info(f"Index '{elastic.password_index}' created successfully!")
@@ -119,7 +126,7 @@ def cit0day_elastic_passwords(
     context.log.info(f"Filename: {upstream_archive}, df.shape: {df.shape}")
     docs = df.to_dicts()
     actions = [{"_index": elastic.password_index, "_source": doc} for doc in docs]
-    resp = helpers.bulk(elastic.client, actions)
+    resp = helpers.bulk(client, actions)
     context.log.info(resp)
 
 

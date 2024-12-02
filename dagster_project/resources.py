@@ -7,10 +7,7 @@ from pyiceberg.catalog import Catalog, load_catalog
 class ElasticResource(ConfigurableResource):
     url: str = "https://elastic.local.reinthal.cc"
     api_key: str = EnvVar("ELASTIC_API_KEY")
-    password_index: str = EnvVar("ELASTIC_PASSWORD_INDEX")
-    client: Elasticsearch = Elasticsearch(
-        hosts=["https://elastic.local.reinthal.cc"], api_key=EnvVar("ELASTIC_API_KEY")
-    )
+    password_index: str = EnvVar("ELASTIC_PASSWORDS_INDEX")
 
 
 class NessieCatalogResource(ConfigurableResource):

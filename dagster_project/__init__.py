@@ -2,6 +2,7 @@ from dagster import Definitions
 
 from dagster_project.assets import (
     cit0day_as_parquet,
+    cit0day_elastic_passwords,
     cit0day_parquets,
     cit0day_password_files,
 )
@@ -19,6 +20,7 @@ defs = Definitions(
         "nessie_default": nessie_default_catalog,
     },
     assets=[
+        cit0day_elastic_passwords,
         cit0day_parquets,
         cit0day_password_files,
         cit0day_as_parquet,
