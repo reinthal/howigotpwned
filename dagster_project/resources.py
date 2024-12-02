@@ -1,13 +1,15 @@
 from dagster import ConfigurableResource, EnvVar
 from dagster_aws.s3 import S3Resource
+from elasticsearch import Elasticsearch
 from pyiceberg.catalog import Catalog, load_catalog
 
 
 class ElasticResource(ConfigurableResource):
     url: str = "https://elastic.local.reinthal.cc"
-    username: str = EnvVar("ELASTIC_USERNAME")
-    password: str = EnvVar("ELASTIC_PASSWORD")
+    api_key: str = EnvVar("ELASTIC_API_KEY")
     password_index: str = EnvVar("ELASTIC_PASSWORD_INDEX")
+    client: Elasticsearch = Elasticsearch(hosts=["https://elastic.local.reinthal.cc"], \
+                    api_key=EnvVar("ELASTIC_API_KEY"))
 
 class NessieCatalogResource(ConfigurableResource):
     name: str = "default"
