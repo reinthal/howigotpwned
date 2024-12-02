@@ -9,21 +9,21 @@ from typing import List
 import polars as pl
 from dagster import AssetExecutionContext, asset
 from dagster_aws.s3 import S3Resource
+from elasticsearch import helpers
 from tqdm import tqdm
 
 from dagster_project.partitions import password_archive_partitions_def
-from dagster_project.resources import NessieCatalogResource,  ElasticResource
+from dagster_project.resources import ElasticResource, NessieCatalogResource
 from dagster_project.schemas import (
     cit0day_partition_spec,
-    cit0day_sort_order,
     cit0day_polars_schema,
     cit0day_schema,
+    cit0day_sort_order,
     passwords_mappings,
 )
 from dagster_project.utils.iceberg_retry import append_to_table_with_retry
 from dagster_project.utils.passwords import create_passwords_polars_frame_from_file
 from dagster_project.utils.s3_utils import (
-    get_directories,
     get_objects,
 )
 
@@ -106,10 +106,25 @@ def cit0day_elastic_passwords(
     nas_minio.get_client().download_fileobj(RAW_BUCKET, upstream_archive, file_obj)
     file_obj.seek(0)
     df = pl.read_parquet(file_obj)
-    json_df = df.to_json()
+    
+    if not elastic.client.indices.exists(index=elastic.password_index):
+        elastic.client.indices.create(index=elastic.password_index,\
+             body=passwords_mappings)
+        context.log.info(f"Index '{elastic.password_index}' created successfully!")
+
     context.log.info(df.head())
     context.log.info(f"Filename: {upstream_archive}, df.shape: {df.shape}")
-    # TODO: bulk push to Elastic
+    docs = df.to_dicts()
+    actions = [
+        {
+            "_index": elastic.password_index, 
+            "_source": doc
+        }
+        for doc in docs
+    ]
+    resp = helpers.bulk(elastic.client, actions)
+    context.log.info(resp)
+
     
 
 @asset(
