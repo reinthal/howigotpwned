@@ -2,6 +2,7 @@ import re
 import uuid
 from io import BytesIO
 from typing import List
+import gc
 
 import polars as pl
 from dagster import AssetExecutionContext, asset
@@ -35,6 +36,12 @@ PARQUET_ESTIMATE_SIZE = 500.0
 def cit0day_as_parquet(context: AssetExecutionContext, nas_minio: S3Resource):
     objs = get_objects(source_bucket=RAW_BUCKET, prefix=FOLDER_PATH, s3=nas_minio)
     dfs = pl.DataFrame(schema=cit0day_polars_schema)
+    # Clear all existing parquets before starting
+    existing_parquets = get_objects(source_bucket=RAW_BUCKET, prefix="parquets", \
+                                    s3=nas_minio)
+    for parquet_file in existing_parquets:
+        nas_minio.get_client().delete_object(Bucket=RAW_BUCKET, Key=parquet_file)
+    context.log.info(f"Deleted {len(existing_parquets)} existing parquet files")
     with tqdm(total=len(objs)) as pbar:
         for obj in objs:
             # - file name
@@ -69,6 +76,8 @@ def cit0day_as_parquet(context: AssetExecutionContext, nas_minio: S3Resource):
                 nas_minio.get_client().upload_fileobj(
                     buffer, Bucket=RAW_BUCKET, Key=Key
                 )
+                del dfs
+                gc.collect()
                 dfs = pl.DataFrame(schema=cit0day_polars_schema)  # Reset the DataFrame
                 context.log.info(
                     f"Progress: {pbar.n}/{pbar.total} \

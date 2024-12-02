@@ -13,7 +13,7 @@ job_executor = k8s_job_executor.configured(
                 "resources": {
                     "requests": {
                         "cpu": "2",
-                        "memory": "2Gi"
+                        "memory": "6Gi"
                     },
                 }
             }
