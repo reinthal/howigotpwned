@@ -1,3 +1,9 @@
+## v1.2.1 (2024-12-02)
+
+### Fix
+
+- add 2gig for each job in kubernetes
+
 ## v1.2.0 (2024-12-02)
 
 ### Feat
