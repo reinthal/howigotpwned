@@ -12,12 +12,13 @@ from dagster_aws.s3 import S3Resource
 from tqdm import tqdm
 
 from dagster_project.partitions import password_archive_partitions_def
-from dagster_project.resources import NessieCatalogResource
+from dagster_project.resources import NessieCatalogResource,  ElasticResource
 from dagster_project.schemas import (
     cit0day_partition_spec,
     cit0day_sort_order,
     cit0day_polars_schema,
     cit0day_schema,
+    passwords_mappings,
 )
 from dagster_project.utils.iceberg_retry import append_to_table_with_retry
 from dagster_project.utils.passwords import create_passwords_polars_frame_from_file
@@ -55,6 +56,7 @@ def cit0day_as_parquet(context: AssetExecutionContext, nas_minio: S3Resource):
                 (pl.lit(RAW_BUCKET)).alias("bucket"),
                 (pl.lit(file_name)).alias("prefix"),
                 (pl.lit(category).alias("category")),
+                (pl.date(year=2020,month=11,day=4).alias("date")),
             )
             dfs = pl.concat([dfs, df])
             # Flush when file gets large enough or last object in list
@@ -87,11 +89,33 @@ def cit0day_parquets(
     )
     return archives
 
+@asset(
+    partitions_def=password_archive_partitions_def,
+    group_name="elastic",
+    description="Elastic data of Cit0day passwords.",
+    deps=[cit0day_parquets],
+)
+def cit0day_elastic_passwords(
+    context: AssetExecutionContext,
+    nas_minio: S3Resource,
+    elastic: ElasticResource
+) -> None:
+    upstream_archive = context.partition_key
+    # download the file
+    file_obj = BytesIO()
+    nas_minio.get_client().download_fileobj(RAW_BUCKET, upstream_archive, file_obj)
+    file_obj.seek(0)
+    df = pl.read_parquet(file_obj)
+    json_df = df.to_json()
+    context.log.info(df.head())
+    context.log.info(f"Filename: {upstream_archive}, df.shape: {df.shape}")
+    # TODO: bulk push to Elastic
+    
 
 @asset(
     partitions_def=password_archive_partitions_def,
     group_name="staging",
-    description="Staged Cit0day passwords parsed as csv separated by `:`",
+    description="Staged Cit0day passwords parsed.",
     deps=[cit0day_parquets],
 )
 def cit0day_password_files(

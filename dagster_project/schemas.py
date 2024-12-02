@@ -31,11 +31,9 @@ cit0day_schema = Schema(
     NestedField(field_id=7, name="date", field_type=DateType(), required=False),
 )
 
-# Define the index name
-index_name = "cit0day_index"
 
 # Define the index mappings
-mapping = {
+passwords_mappings = {
     "mappings": {
         "properties": {
             "email": {

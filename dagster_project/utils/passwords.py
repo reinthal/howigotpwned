@@ -50,6 +50,7 @@ def create_passwords_polars_frame_from_file(
             "bucket": [None for _ in range(0, len(data))],
             "prefix": [None for _ in range(0, len(data))],
             "category": [None for _ in range(0, len(data))],
+            "date": [None for _ in range(0, len(data))],
         },
         schema=schema,
     )
