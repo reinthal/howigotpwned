@@ -40,25 +40,30 @@ passwords_mappings = {
                 "type": "text",  # or "keyword" if you want exact matches
             },
             "username": {
-                "type": "text",
+                "type": "keyword",
             },
             "email_domain": {
-                "type": "text",  # or "keyword" if you want exact matches
+                "type": "keyword",  # or "keyword" if you want exact matches
             },
             "data": {
-                "type": "text",
+                "type": "keyword",
+                "index": False 
             },
             "bucket": {
                 "type": "keyword",  # or "keyword" if you want exact matches
+                "index": False 
             },
             "prefix": {
                 "type": "keyword",  # or "keyword" if you want exact matches
+                "index": False 
             },
             "category": {
                 "type": "keyword",  # keyword will be better for exact matches
             },
             "date": {
                 "type": "date",
+                "index": False 
+                
             }
         }
     }
