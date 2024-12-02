@@ -1,21 +1,22 @@
-from dagster_project.utils.passwords import create_passwords_polars_frame_from_file
+import os
+import re
+import uuid
+from pathlib import Path
+
+import polars as pl
+from tqdm import tqdm
+
 from dagster_project.schemas import (
     cit0day_polars_schema,
 )
-import re
+from dagster_project.utils.passwords import create_passwords_polars_frame_from_file
 
 CATEGORY_REGEX = r".*\((?P<category>.*?)\)"
 RAW_BUCKET = "raw"
 FOLDER_PATH = "extracted"
-import uuid
-from tqdm import tqdm
-import os
-import glob
-import polars as pl
 
 source_directory = "/mnt/data/kog/Cit0day Prem [_special_for_xss.is]/"
 destination_directory = "/mnt/data/kog/parquetes/"
-from pathlib import Path
 
 source_directory = Path("/mnt/data/kog/Cit0day Prem [_special_for_xss.is]/")
 file_paths = list(source_directory.rglob("*"))  # rglob is recursive glob

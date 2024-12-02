@@ -52,7 +52,9 @@ def test_copy_archive_to_s3():
         aws_secret_access_key=os.getenv(
             "SOURCES__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
         ),
-        aws_access_key_id=os.getenv("SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"),
+        aws_access_key_id=os.getenv(
+            "SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"
+        ),
         endpoint_url=os.getenv("SOURCES__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),
     )
     archive_path = "/home/kog/Downloads/zipcaars.com \
@@ -62,12 +64,15 @@ def test_copy_archive_to_s3():
 
 def test_get_objects():
     import os
+
     # Connect to MinIO
     nas_minio = S3Resource(
         aws_secret_access_key=os.getenv(
             "SOURCES__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"
         ),
-        aws_access_key_id=os.getenv("SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"),
+        aws_access_key_id=os.getenv(
+            "SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"
+        ),
         endpoint_url=os.getenv("SOURCES__FILESYSTEM__CREDENTIALS__AWS_S3_ENDPOINT"),
     )
     source_bucket = "raw"

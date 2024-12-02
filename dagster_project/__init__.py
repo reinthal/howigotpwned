@@ -19,7 +19,7 @@ defs = Definitions(
         "nessie_default": nessie_default_catalog,
     },
     assets=[
-        cit0day_parquets, 
+        cit0day_parquets,
         cit0day_password_files,
         cit0day_as_parquet,
     ],

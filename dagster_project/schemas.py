@@ -14,7 +14,7 @@ cit0day_polars_schema = pl.Schema(
         "bucket": pl.String(),
         "prefix": pl.String(),
         "category": pl.String(),
-        "date":  pl.Date()
+        "date": pl.Date(),
     }
 )
 # Add a cit0day schema
@@ -45,26 +45,19 @@ passwords_mappings = {
             "email_domain": {
                 "type": "keyword",  # or "keyword" if you want exact matches
             },
-            "data": {
-                "type": "keyword",
-                "index": False 
-            },
+            "data": {"type": "keyword", "index": False},
             "bucket": {
                 "type": "keyword",  # or "keyword" if you want exact matches
-                "index": False 
+                "index": False,
             },
             "prefix": {
                 "type": "keyword",  # or "keyword" if you want exact matches
-                "index": False 
+                "index": False,
             },
             "category": {
                 "type": "keyword",  # keyword will be better for exact matches
             },
-            "date": {
-                "type": "date",
-                "index": False 
-                
-            }
+            "date": {"type": "date", "index": False},
         }
     }
 }

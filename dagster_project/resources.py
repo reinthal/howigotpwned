@@ -8,8 +8,10 @@ class ElasticResource(ConfigurableResource):
     url: str = "https://elastic.local.reinthal.cc"
     api_key: str = EnvVar("ELASTIC_API_KEY")
     password_index: str = EnvVar("ELASTIC_PASSWORD_INDEX")
-    client: Elasticsearch = Elasticsearch(hosts=["https://elastic.local.reinthal.cc"], \
-                    api_key=EnvVar("ELASTIC_API_KEY"))
+    client: Elasticsearch = Elasticsearch(
+        hosts=["https://elastic.local.reinthal.cc"], api_key=EnvVar("ELASTIC_API_KEY")
+    )
+
 
 class NessieCatalogResource(ConfigurableResource):
     name: str = "default"
