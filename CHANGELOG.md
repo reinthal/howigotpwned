@@ -1,3 +1,9 @@
+## v1.2.2 (2024-12-03)
+
+### Fix
+
+- make parquets smaller for resource limits
+
 ## v1.2.1 (2024-12-02)
 
 ### Fix
