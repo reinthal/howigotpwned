@@ -11,10 +11,7 @@ job_executor = k8s_job_executor.configured(
         "step_k8s_config": {
             "container_config": {
                 "resources": {
-                    "requests": {
-                        "cpu": "2",
-                        "memory": "6Gi"
-                    },
+                    "requests": {"cpu": "2", "memory": "6Gi"},
                 }
             }
         },
