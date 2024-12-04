@@ -1,3 +1,10 @@
+## v1.2.3 (2024-12-04)
+
+### Fix
+
+- bug in schema definition
+- decrease size of parquets and lint
+
 ## v1.2.2 (2024-12-03)
 
 ### Fix
