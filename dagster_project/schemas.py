@@ -28,7 +28,7 @@ cit0day_schema = Schema(
     NestedField(field_id=5, name="bucket", field_type=StringType(), required=False),
     NestedField(field_id=6, name="prefix", field_type=StringType(), required=False),
     NestedField(field_id=7, name="category", field_type=StringType(), required=False),
-    NestedField(field_id=7, name="date", field_type=DateType(), required=False),
+    NestedField(field_id=8, name="date", field_type=DateType(), required=False),
 )
 
 

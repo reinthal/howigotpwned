@@ -3,7 +3,6 @@ import re
 import uuid
 from io import BytesIO
 from typing import List
-import gc
 
 import polars as pl
 from dagster import AssetExecutionContext, asset
