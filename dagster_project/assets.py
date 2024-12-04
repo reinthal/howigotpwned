@@ -30,6 +30,7 @@ FOLDER_PATH = "extracted"
 CATEGORY_REGEX = r".*\((?P<category>.*?)\)"
 # How much data to load before flush to parquet
 PARQUET_ESTIMATE_SIZE = 400.0
+ELASTIC_BATCH_SIZE_INSERT = 10**6
 
 
 @asset(group_name="raw")
@@ -129,10 +130,20 @@ def cit0day_elastic_passwords(
 
     context.log.info(df.head())
     context.log.info(f"Filename: {upstream_archive}, df.shape: {df.shape}")
-    docs = df.to_dicts()
-    actions = [{"_index": elastic.password_index, "_source": doc} for doc in docs]
-    resp = helpers.bulk(client, actions)
-    context.log.info(resp)
+    total_rows = df.height
+    for start in range(0, total_rows, ELASTIC_BATCH_SIZE_INSERT):
+        end = min(start + ELASTIC_BATCH_SIZE_INSERT, total_rows)
+        batch_dicts = df.slice(start, end - start)
+
+        context.log.info(f"Loading batch: from {start} to {end} out of  {total_rows}")
+        docs = batch_dicts.to_dicts()
+        actions = [{"_index": elastic.password_index, "_source": doc} for doc in docs]
+
+        resp = helpers.bulk(client, actions)
+        del docs
+        del actions
+        gc.collect()
+        context.log.info(resp)
 
 
 @asset(
