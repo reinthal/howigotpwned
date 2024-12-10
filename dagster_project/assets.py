@@ -30,7 +30,7 @@ FOLDER_PATH = "extracted"
 CATEGORY_REGEX = r".*\((?P<category>.*?)\)"
 # How much data to load before flush to parquet
 PARQUET_ESTIMATE_SIZE = 400.0
-ELASTIC_BATCH_SIZE_INSERT = 10**6
+ELASTIC_BATCH_SIZE_INSERT = 10**5
 
 
 @asset(group_name="raw")

@@ -15,6 +15,6 @@ job_executor = k8s_job_executor.configured(
                 }
             }
         },
-        "max_concurrent": 20,
+        "max_concurrent": 5,
     }
 )
