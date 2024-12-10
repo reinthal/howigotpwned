@@ -1,3 +1,11 @@
+## v1.3.1 (2024-12-10)
+
+### Fix
+
+- reduce batch size for elastic
+- reduce nr concurrent jobs to 5 so as to not overwhelm elastic
+- update elastic password for new deployment
+
 ## v1.3.0 (2024-12-04)
 
 ### Feat
