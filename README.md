@@ -27,7 +27,7 @@ Welcome to howigotpwned GitHub repository, which provides tools designed to inde
 
 By using the software, data, and associated documentation available in this repository, you agree to adhere to the ethical considerations as outlined here and respect all applicable laws and regulations. Your intention in using this software should be to promote better security practices, raise awareness, or contribute positively to technological and educational advancements, and not to engage in or promote malicious activities. 
 
-### Discoraged Usages 
+### Don't use like this 
 
 Using this code to: 
 
